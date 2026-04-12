@@ -1,0 +1,20 @@
+{
+  "name": "knowerage-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for AI analysis coverage management",
+  "license": "MIT",
+  "files": ["index.js", "bin"],
+  "bin": { "knowerage-mcp": "./bin/knowerage-mcp.js" },
+  "main": "./index.js",
+  "mcpName": "m.timma/knowerage",
+  "optionalDependencies": {
+    "knowerage-mcp-darwin-arm64": "0.1.0",
+    "knowerage-mcp-darwin-x64": "0.1.0",
+    "knowerage-mcp-linux-x64": "0.1.0",
+    "knowerage-mcp-linux-arm64-gnu": "0.1.0",
+    "knowerage-mcp-win32-x64": "0.1.0",
+    "knowerage-mcp-win32-arm64": "0.1.0"
+  },
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node --test test.js" }
+}

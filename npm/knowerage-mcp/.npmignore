@@ -1,0 +1,9 @@
+# Defense-in-depth: keep publish tarballs small even if `files` changes.
+# `files` in package.json is the primary whitelist.
+
+node_modules/
+test.js
+package-lock.json
+*.tgz
+.DS_Store
+coverage/

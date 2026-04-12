@@ -1,0 +1,70 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            npm_pkg: knowerage-mcp-linux-x64
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            npm_pkg: knowerage-mcp-linux-arm64-gnu
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            npm_pkg: knowerage-mcp-darwin-arm64
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            npm_pkg: knowerage-mcp-darwin-x64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            npm_pkg: knowerage-mcp-win32-x64
+          - os: windows-latest
+            target: aarch64-pc-windows-msvc
+            npm_pkg: knowerage-mcp-win32-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - run: cargo build --release --target ${{ matrix.target }}
+      - name: Copy binary to npm package
+        shell: bash
+        run: |
+          BIN_NAME="knowerage-mcp"
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then BIN_NAME="knowerage-mcp.exe"; fi
+          cp "target/${{ matrix.target }}/release/$BIN_NAME" "npm/${{ matrix.npm_pkg }}/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.npm_pkg }}
+          path: npm/${{ matrix.npm_pkg }}/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: knowerage-mcp-*
+          path: npm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Publish platform packages
+        run: |
+          for pkg in npm/knowerage-mcp-*/; do
+            cd "$pkg" && npm publish --access public && cd ../..
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish main package
+        run: cd npm/knowerage-mcp && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,10 @@
+{
+  "name": "knowerage-mcp-win32-x64",
+  "version": "0.1.0",
+  "description": "Knowerage MCP binary for Windows x64",
+  "license": "MIT",
+  "files": ["knowerage-mcp.exe"],
+  "os": ["win32"],
+  "cpu": ["x64"],
+  "bin": { "knowerage-mcp": "./knowerage-mcp.exe" }
+}

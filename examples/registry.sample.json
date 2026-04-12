@@ -1,0 +1,27 @@
+{
+  "knowerage/analysis/auth/auth-login.md": {
+    "analysis_path": "knowerage/analysis/auth/auth-login.md",
+    "source_path": "src/legacy/AuthService.java",
+    "covered_ranges": [
+      [120, 165],
+      [210, 248]
+    ],
+    "analysis_hash": "sha256:a3f5c8e9d2b1047f6e1a0c8d4b9e2f5a7c3d6e8b1f4a9c2d5e7f0a3b6c9d1e4f7",
+    "source_hash": "sha256:7b2e9f4a1c8d5e0b3f6a9c2d5e8b1f4a7c0d3e6f9a2b5c8d1e4f7a0b3c6d9e2f5",
+    "record_created_at": "2026-03-01T10:26:00Z",
+    "record_updated_at": "2026-03-15T14:22:31Z",
+    "status": "fresh"
+  },
+  "knowerage/analysis/util/string-helpers.md": {
+    "analysis_path": "knowerage/analysis/util/string-helpers.md",
+    "source_path": "src/util/StringHelpers.java",
+    "covered_ranges": [
+      [1, 95]
+    ],
+    "analysis_hash": "sha256:9c1d4f7a0e3b6c9d2f5a8b1e4c7d0a3f6b9c2e5d8a1f4b7c0e3d6a9f2b5c8d1e4",
+    "source_hash": "sha256:4e8b1f7c3a6d9e2f5b8c1d4e7a0f3b6c9d2e5f8a1b4c7d0e3f6a9b2c5d8e1f4a7",
+    "record_created_at": "2026-02-10T08:00:00Z",
+    "record_updated_at": "2026-03-20T09:15:00Z",
+    "status": "stale_src"
+  }
+}

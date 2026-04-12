@@ -1,0 +1,48 @@
+# Cargo build output
+/target/
+
+# rustfmt backups
+**/*.rs.bk
+
+# MSVC Windows (rustc)
+*.pdb
+
+# OS / editor noise
+.DS_Store
+
+# --- Node.js (npm / tooling) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Dependency / package manager
+.npm
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Test / coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Caches & build artifacts
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+.cache/
+.parcel-cache/
+
+# Pack output
+*.tgz
+
+# Env files with secrets (keep committed examples as *.example)
+.env
+.env.local
+.env.*.local

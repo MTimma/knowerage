@@ -1,0 +1,20 @@
+---
+description: Knowerage legacy code analysis workflow — create analysis, reconcile, record coverage
+alwaysApply: true
+---
+
+# Knowerage Analysis Workflow
+
+**If Knowerage MCP tools appear in your available tools, the user has opted in:** use them for any task that analyzes, documents, or explains legacy/source files in this workspace. Do not bypass Knowerage by writing `knowerage/analysis/**/*.md` with generic file-edit tools only, and never hand-edit `knowerage/registry.json`.
+
+When analyzing legacy code (Java, XML, or other source files):
+
+1. **Create analysis** — Use `knowerage.create_or_update_doc` to create an `.md` file with YAML frontmatter (`source_file`, `covered_lines`, `analysis_date`).
+2. **Reconcile** — Call `knowerage.reconcile_record` after creating or updating an analysis file (required every time).
+3. **Record coverage** — `knowerage.reconcile_record` updates `knowerage/registry.json` (no manual append needed).
+
+**Registry inventory** — To see every analysis↔source mapping, covered line ranges, and freshness in one response (same structure as `registry.json`), call `knowerage.list_registry` instead of reading the file manually.
+
+**"Analyze X" implies full workflow** — create analysis, reconcile, and record coverage. No need for the user to say "record coverage" or "use the MCP" explicitly.
+
+**Repos without this rule** — Users who only installed the MCP should add the same guidance to Cursor User Rules or copy this file into their project’s `.cursor/rules/`.
