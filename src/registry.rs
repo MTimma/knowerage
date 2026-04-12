@@ -32,17 +32,22 @@ pub struct Registry {
     registry_lock: Arc<RegistryLock>,
 }
 
-/// When unset or empty, auto full reconcile (file watcher) is **on** (backward compatible).
-/// Set to `0`, `false`, or `no` (case-insensitive) to disable.
+/// When unset, empty, or not a recognized truthy value, auto full reconcile (file watcher) is **off**.
+/// Set to `1`, `true`, `yes`, or `on` (trimmed, case-insensitive) to enable.
 pub fn auto_full_reconcile_enabled() -> bool {
-    match std::env::var("KNOWERAGE_AUTO_FULL_RECONCILE") {
-        Ok(s) if s.trim().is_empty() => true,
-        Ok(s) => {
-            let lower = s.trim().to_lowercase();
-            !matches!(lower.as_str(), "0" | "false" | "no")
-        }
-        Err(_) => true,
+    std::env::var("KNOWERAGE_AUTO_FULL_RECONCILE")
+        .ok()
+        .as_ref()
+        .map(|s| auto_full_reconcile_env_value_truthy(s.as_str()))
+        .unwrap_or(false)
+}
+
+fn auto_full_reconcile_env_value_truthy(s: &str) -> bool {
+    let lower = s.trim().to_lowercase();
+    if lower.is_empty() {
+        return false;
     }
+    matches!(lower.as_str(), "1" | "true" | "yes" | "on")
 }
 
 fn path_is_registry_artifact(path: &Path) -> bool {
@@ -349,6 +354,26 @@ mod tests {
             source_file: PathBuf::from(source),
             covered_lines: vec![[1, 50]],
             analysis_date: Utc::now(),
+        }
+    }
+
+    #[test]
+    fn auto_full_reconcile_env_truthy_values() {
+        for v in ["true", "TRUE", "  yes ", "1", "on", " On "] {
+            assert!(
+                super::auto_full_reconcile_env_value_truthy(v),
+                "expected truthy: {v:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn auto_full_reconcile_env_non_truthy_values() {
+        for v in ["", "   ", "false", "0", "no", "maybe", "2"] {
+            assert!(
+                !super::auto_full_reconcile_env_value_truthy(v),
+                "expected not truthy: {v:?}"
+            );
         }
     }
 
