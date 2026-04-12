@@ -149,7 +149,7 @@ The MCP server resolves workspace root in this order:
 2. **KNOWERAGE_WORKSPACE_ROOT** — Environment variable override.
 3. **Fallback** — `process.cwd()` (Node) or `std::env::current_dir()` (Rust) / `./`.
 
-**Cursor / VS Code**: Use project-level `.cursor/mcp.json` or `.vscode/mcp.json` with `"env": { "KNOWERAGE_WORKSPACE_ROOT": "${workspaceFolder}" }` so the MCP workspace matches the IDE's open project root.
+**MCP host / IDE**: In your MCP server config (for example `.cursor/mcp.json` or `.vscode/mcp.json` when your client uses those paths), set `"env": { "KNOWERAGE_WORKSPACE_ROOT": "${workspaceFolder}" }` or the equivalent your host documents, so the MCP workspace matches the open project root.
 
 ---
 

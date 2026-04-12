@@ -68,4 +68,4 @@ Implement real calls once 1a and 1b are available.
 - [ ] All 8 unit tests pass
 - [ ] Every path parameter validated against workspace root
 - [ ] Deterministic response shape for success and error
-- [ ] MCP server runs via stdio for Cursor/host
+- [ ] MCP server runs via stdio for the MCP host

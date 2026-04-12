@@ -15,9 +15,10 @@ cargo build --release
 ./target/release/knowerage-mcp
 ```
 
-## Cursor MCP Config
+## MCP server configuration
 
-Add to `.cursor/mcp.json`:
+Register Knowerage wherever your MCP host expects server definitions (for example some clients use `.cursor/mcp.json` or `.vscode/mcp.json`; others use environment variables or a UI—follow your host’s documentation). Use the same server entry shape:
+
 ```json
 {
   "mcpServers": {
@@ -33,7 +34,9 @@ Add to `.cursor/mcp.json`:
 }
 ```
 
-`KNOWERAGE_AUTO_FULL_RECONCILE` is optional: when **unset** or **empty**, it defaults to **on** (same as `"true"`). Set to `false`, `0`, or `no` to disable. When **on**, the server watches `knowerage/` and, after a short debounce, runs `knowerage.reconcile_all` on filesystem changes. That is **not** the same as running a full reconcile after every MCP tool call—it only reacts to file changes under `knowerage/`. Registry writes to `registry.json` are ignored by the watcher so saves do not loop.
+Replace `${workspaceFolder}` with your project root if your host does not expand that variable.
+
+`KNOWERAGE_AUTO_FULL_RECONCILE` is optional: when **unset**, **empty**, or not a truthy value, the file watcher defaults to **off**. Set to `1`, `true`, `yes`, or `on` (trimmed, case-insensitive) to enable. When **on**, the server watches `knowerage/` and, after a short debounce, runs `knowerage.reconcile_all` on filesystem changes. That is **not** the same as running a full reconcile after every MCP tool call—it only reacts to file changes under `knowerage/`. Registry writes to `registry.json` are ignored by the watcher so saves do not loop.
 
 ## How It Works
 

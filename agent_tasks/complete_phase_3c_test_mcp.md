@@ -37,7 +37,7 @@ Integration and end-to-end tests for the MCP server. Verifies tool dispatch, pat
 
 | # | Test | Steps | Expected |
 |---|------|-------|----------|
-| 1 | User workflow via MCP host | Cursor/agent starts MCP, calls tools | Tools respond correctly |
+| 1 | User workflow via MCP host | Host or agent starts MCP, calls tools | Tools respond correctly |
 | 2 | stdio transport | Launch server, send JSON-RPC over stdin | Responses on stdout |
 
 ---

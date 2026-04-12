@@ -17,4 +17,4 @@ When analyzing legacy code (Java, XML, or other source files):
 
 **"Analyze X" implies full workflow** — create analysis, reconcile, and record coverage. No need for the user to say "record coverage" or "use the MCP" explicitly.
 
-**Repos without this rule** — Users who only installed the MCP should add the same guidance to Cursor User Rules or copy this file into their project’s `.cursor/rules/`.
+**Repos without this rule** — Users who only installed the MCP should add the same guidance to their client’s user-level agent rules (if supported) or add a project rules file using a path and format their MCP host documents (this repo uses `.cursor/rules/` as an example).

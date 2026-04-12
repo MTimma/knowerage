@@ -283,4 +283,4 @@ Returns a batch overview. **Coverage calculation uses fresh records only**; stal
   1. MCP roots (if provided)
   2. `KNOWERAGE_WORKSPACE_ROOT` environment variable
   3. `process.cwd()` / current working directory
-- **`KNOWERAGE_AUTO_FULL_RECONCILE`** (MCP server `env`): When on (default if unset or empty), the server watches `knowerage/` and runs a debounced `reconcile_all` on relevant file changes. Set to `false`, `0`, or `no` to disable. Not the same as running `reconcile_all` after every MCP tool call.
+- **`KNOWERAGE_AUTO_FULL_RECONCILE`** (MCP server `env`): Default **off** (unset, blank, or non-truthy). Set to `1`, `true`, `yes`, or `on` (trimmed, case-insensitive) to enable: the server watches `knowerage/` and runs a debounced `reconcile_all` on relevant file changes. Not the same as running `reconcile_all` after every MCP tool call.

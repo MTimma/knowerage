@@ -29,7 +29,7 @@ Implement single-writer registry (`knowerage/registry.json`), content hashing, a
 4. Assign status: `fresh`, `stale_doc`, `stale_src`, `missing_src`, `dangling_doc`
 5. Rebuild record when stale; preserve `record_created_at`, update `record_updated_at`
 6. Implement reconcile-one and reconcile-all (glob over `knowerage/analysis/**/*.md`)
-7. Implement file watcher: while Rust MCP is running (started by Cursor), when the agent makes any changes to contents in the `knowerage` folder or to `knowerage/registry.json`, the file watcher triggers full verification and reconciliation. This includes comparing source files mentioned in `registry.json` against their current content (in the project folder where `knowerage` is located) and detecting hash mismatches (updated content). Reconcile stale records accordingly.
+7. Implement file watcher: while Rust MCP is running (started by the MCP host), when the agent makes any changes to contents in the `knowerage` folder or to `knowerage/registry.json`, the file watcher triggers full verification and reconciliation. This includes comparing source files mentioned in `registry.json` against their current content (in the project folder where `knowerage` is located) and detecting hash mismatches (updated content). Reconcile stale records accordingly.
 
 ---
 

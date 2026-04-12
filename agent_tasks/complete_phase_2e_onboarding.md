@@ -15,11 +15,11 @@ Close gaps so Knowerage works out of the box: clear workspace resolution, first-
 
 | Gap | Impact | Recommendation |
 |-----|--------|-----------------|
-| Workspace root | MCP may use wrong directory | Document how Cursor passes workspace; add `KNOWERAGE_WORKSPACE_ROOT` and clear error if invalid |
+| Workspace root | MCP may use wrong directory | Document how the MCP host passes workspace roots; add `KNOWERAGE_WORKSPACE_ROOT` and clear error if invalid |
 | First-run bootstrap | Empty project has no registry | Consider auto-running `reconcile_all` on first `get_file_status` or `get_tree` when registry is empty |
-| Copy-paste config | Users must write config manually | Provide ready-to-paste Cursor MCP config snippet in README |
+| Copy-paste config | Users must write config manually | Provide ready-to-paste MCP server config snippet in README |
 | Analysis folder | Agent may not know where to put analyses | Document convention (e.g. `knowerage/analysis/`) and/or add `knowerage.create_or_update_doc` default path |
-| User rules | Agent must know to append to `knowerage/registry.txt` | Document as suggested Cursor rule for users |
+| User rules | Agent must know to append to `knowerage/registry.txt` | Document as suggested MCP client agent rule for users |
 | Agent inference | User must say "record coverage" every time | Add rule: "Analyze X" implies full workflow (create, reconcile, record) |
 
 ---
@@ -30,7 +30,7 @@ Close gaps so Knowerage works out of the box: clear workspace resolution, first-
 2. **README update** — Link to onboarding; include copy-paste MCP config.
 3. **MCP server** — `E_WORKSPACE_ROOT_INVALID` (or equivalent) when workspace root is invalid.
 4. **First-run bootstrap** (optional) — Auto-run `reconcile_all` when registry is empty on first `get_file_status` or `get_tree`.
-5. **Suggested Cursor rule** — `.cursor/rules/knowerage-analysis.mdc` or documented snippet in onboarding.
+5. **Suggested project rule** — `.cursor/rules/knowerage-analysis.mdc` (or equivalent for the user’s MCP client) or documented snippet in onboarding.
 
 ---
 
@@ -48,9 +48,9 @@ Close gaps so Knowerage works out of the box: clear workspace resolution, first-
 ## USER_ONBOARDING.md Spec (Reference)
 
 - §1 One-time setup (install, workspace root, first-run bootstrap)
-- §2 Copy-paste Cursor MCP config (Node + Rust variants)
+- §2 Copy-paste MCP host config (Node + Rust variants)
 - §3 Analysis folder convention
-- §4 Suggested Cursor rules (agent guidance)
+- §4 Suggested agent rules (MCP client guidance)
 - §5 Typical prompts (no "record coverage" needed)
 - §6 When to reconcile
 - §7 Troubleshooting
@@ -81,5 +81,5 @@ The user does not need to say "record coverage" — the agent infers the full wo
 - [ ] README or main docs link to onboarding and include MCP config snippet
 - [ ] MCP server returns clear error when workspace root is invalid
 - [ ] (Optional) First-run bootstrap implemented when registry empty
-- [ ] Suggested Cursor rule created or documented
+- [ ] Suggested project or user-level agent rule created or documented
 - [ ] `INSTRUCTIONS.md` includes implicit workflow guidance

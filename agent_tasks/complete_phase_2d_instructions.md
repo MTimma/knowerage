@@ -7,7 +7,7 @@
 
 ## Objective
 
-Produce `INSTRUCTIONS.md` for the Knowerage MCP server so agents and users know when and how to call tools, discover analysis files, and perform full registry recalculation. This file is consumed by the MCP host (e.g. Cursor) and provides context to the AI agent.
+Produce `INSTRUCTIONS.md` for the Knowerage MCP server so agents and users know when and how to call tools, discover analysis files, and perform full registry recalculation. This file is consumed by the MCP host and provides context to the AI agent.
 
 ---
 
