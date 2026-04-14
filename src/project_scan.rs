@@ -53,7 +53,7 @@ pub fn project_files_and_lines(
         .filter_entry(|e| {
             if e.file_type().is_dir() {
                 let name = e.file_name().to_str().unwrap_or("");
-                !EXCLUDED_DIR_NAMES.iter().any(|d| *d == name)
+                !EXCLUDED_DIR_NAMES.contains(&name)
             } else {
                 true
             }

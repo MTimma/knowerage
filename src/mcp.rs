@@ -1268,7 +1268,7 @@ mod tests {
         assert_eq!(result["summary"]["covered_lines"], 0);
         assert_eq!(result["summary"]["pct_files_tracked"], 0.0);
         assert_eq!(result["summary"]["pct_lines_covered_vs_project"], 0.0);
-        assert!(result["summary"]["extensions_applied"].as_array().unwrap().len() > 0);
+        assert!(!result["summary"]["extensions_applied"].as_array().unwrap().is_empty());
         assert!(result["sources"].as_array().unwrap().is_empty());
         assert!(result["stale_records"].as_array().unwrap().is_empty());
     }
