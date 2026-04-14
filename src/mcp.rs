@@ -286,10 +286,7 @@ impl McpServer {
                 continue;
             }
             if let Some(ref statuses) = status_filter {
-                if !statuses
-                    .iter()
-                    .any(|s| record.status.to_string() == *s)
-                {
+                if !statuses.iter().any(|s| record.status.to_string() == *s) {
                     continue;
                 }
             }
@@ -372,8 +369,7 @@ impl McpServer {
                 &recs[0].source_path.to_string_lossy(),
             )
             .and_then(|abs| {
-                fs::read_to_string(&abs)
-                    .map_err(|e| KnowerageError::SrcMissing(format!("{e}")))
+                fs::read_to_string(&abs).map_err(|e| KnowerageError::SrcMissing(format!("{e}")))
             }) {
                 Ok(content) => content.lines().count() as u64,
                 Err(_) => {
@@ -851,9 +847,8 @@ fn require_string_array<'a>(args: &'a Value, field: &str) -> Result<Vec<&'a str>
     arr.iter()
         .enumerate()
         .map(|(i, v)| {
-            v.as_str().ok_or_else(|| {
-                KnowerageError::DocParse(format!("{field}[{i}] must be a string"))
-            })
+            v.as_str()
+                .ok_or_else(|| KnowerageError::DocParse(format!("{field}[{i}] must be a string")))
         })
         .collect()
 }
@@ -1268,7 +1263,10 @@ mod tests {
         assert_eq!(result["summary"]["covered_lines"], 0);
         assert_eq!(result["summary"]["pct_files_tracked"], 0.0);
         assert_eq!(result["summary"]["pct_lines_covered_vs_project"], 0.0);
-        assert!(!result["summary"]["extensions_applied"].as_array().unwrap().is_empty());
+        assert!(!result["summary"]["extensions_applied"]
+            .as_array()
+            .unwrap()
+            .is_empty());
         assert!(result["sources"].as_array().unwrap().is_empty());
         assert!(result["stale_records"].as_array().unwrap().is_empty());
     }
@@ -1279,7 +1277,10 @@ mod tests {
         let tmp = TempDir::new().unwrap();
         let server = setup_server(&tmp);
 
-        let source = (1..=10).map(|i| format!("line {i}")).collect::<Vec<_>>().join("\n");
+        let source = (1..=10)
+            .map(|i| format!("line {i}"))
+            .collect::<Vec<_>>()
+            .join("\n");
         create_source_file(&tmp, "src/App.java", &source);
 
         let create = serde_json::json!({
@@ -1288,7 +1289,9 @@ mod tests {
             "covered_lines": [[1, 5]],
             "content": "# Analysis"
         });
-        server.dispatch_tool("knowerage.create_or_update_doc", create).unwrap();
+        server
+            .dispatch_tool("knowerage.create_or_update_doc", create)
+            .unwrap();
         server
             .dispatch_tool(
                 "knowerage.reconcile_record",
@@ -1321,7 +1324,10 @@ mod tests {
 
         let attr = sources[0]["range_attribution"].as_array().unwrap();
         assert_eq!(attr.len(), 1);
-        assert!(attr[0]["analysis_path"].as_str().unwrap().contains("app.md"));
+        assert!(attr[0]["analysis_path"]
+            .as_str()
+            .unwrap()
+            .contains("app.md"));
     }
 
     // Test 11: coverage_overview uses fresh records only for coverage
@@ -1330,7 +1336,10 @@ mod tests {
         let tmp = TempDir::new().unwrap();
         let server = setup_server(&tmp);
 
-        let source = (1..=20).map(|i| format!("line {i}")).collect::<Vec<_>>().join("\n");
+        let source = (1..=20)
+            .map(|i| format!("line {i}"))
+            .collect::<Vec<_>>()
+            .join("\n");
         create_source_file(&tmp, "src/Svc.java", &source);
 
         let create1 = serde_json::json!({
@@ -1339,7 +1348,9 @@ mod tests {
             "covered_lines": [[1, 10]],
             "content": "# A"
         });
-        server.dispatch_tool("knowerage.create_or_update_doc", create1).unwrap();
+        server
+            .dispatch_tool("knowerage.create_or_update_doc", create1)
+            .unwrap();
         server
             .dispatch_tool(
                 "knowerage.reconcile_record",
@@ -1353,7 +1364,9 @@ mod tests {
             "covered_lines": [[11, 20]],
             "content": "# B"
         });
-        server.dispatch_tool("knowerage.create_or_update_doc", create2).unwrap();
+        server
+            .dispatch_tool("knowerage.create_or_update_doc", create2)
+            .unwrap();
         server
             .dispatch_tool(
                 "knowerage.reconcile_record",
@@ -1368,7 +1381,10 @@ mod tests {
         assert_eq!(r1["summary"]["avg_coverage_pct"], 100.0);
 
         // Mutate the source to make records stale, then reconcile
-        let new_source = (1..=25).map(|i| format!("line {i}")).collect::<Vec<_>>().join("\n");
+        let new_source = (1..=25)
+            .map(|i| format!("line {i}"))
+            .collect::<Vec<_>>()
+            .join("\n");
         create_source_file(&tmp, "src/Svc.java", &new_source);
         server
             .dispatch_tool("knowerage.reconcile_all", serde_json::json!({}))
@@ -1391,8 +1407,14 @@ mod tests {
         let tmp = TempDir::new().unwrap();
         let server = setup_server(&tmp);
 
-        let src_a = (1..=10).map(|i| format!("line {i}")).collect::<Vec<_>>().join("\n");
-        let src_b = (1..=20).map(|i| format!("line {i}")).collect::<Vec<_>>().join("\n");
+        let src_a = (1..=10)
+            .map(|i| format!("line {i}"))
+            .collect::<Vec<_>>()
+            .join("\n");
+        let src_b = (1..=20)
+            .map(|i| format!("line {i}"))
+            .collect::<Vec<_>>()
+            .join("\n");
         create_source_file(&tmp, "src/A.java", &src_a);
         create_source_file(&tmp, "src/B.java", &src_b);
 
@@ -1454,8 +1476,14 @@ mod tests {
         let tmp = TempDir::new().unwrap();
         let server = setup_server(&tmp);
 
-        let tracked = (1..=5).map(|i| format!("line {i}")).collect::<Vec<_>>().join("\n");
-        let untracked = (1..=7).map(|i| format!("x {i}")).collect::<Vec<_>>().join("\n");
+        let tracked = (1..=5)
+            .map(|i| format!("line {i}"))
+            .collect::<Vec<_>>()
+            .join("\n");
+        let untracked = (1..=7)
+            .map(|i| format!("x {i}"))
+            .collect::<Vec<_>>()
+            .join("\n");
         create_source_file(&tmp, "src/Tracked.java", &tracked);
         create_source_file(&tmp, "src/Untracked.java", &untracked);
 

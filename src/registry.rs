@@ -61,7 +61,11 @@ fn event_paths_all_registry_artifacts(event: &Event) -> bool {
     !event.paths.is_empty() && event.paths.iter().all(|p| path_is_registry_artifact(p))
 }
 
-fn watcher_reconcile_loop(rx: mpsc::Receiver<()>, workspace_root: PathBuf, lock: Arc<RegistryLock>) {
+fn watcher_reconcile_loop(
+    rx: mpsc::Receiver<()>,
+    workspace_root: PathBuf,
+    lock: Arc<RegistryLock>,
+) {
     while rx.recv().is_ok() {
         loop {
             match rx.recv_timeout(Duration::from_millis(WATCHER_DEBOUNCE_MS)) {
@@ -107,7 +111,10 @@ impl Registry {
             .map_err(|e| KnowerageError::RegistryIo(format!("Failed to parse registry: {e}")))
     }
 
-    fn save_unlocked(&self, records: &HashMap<String, RegistryRecord>) -> Result<(), KnowerageError> {
+    fn save_unlocked(
+        &self,
+        records: &HashMap<String, RegistryRecord>,
+    ) -> Result<(), KnowerageError> {
         let path = self.registry_path();
         if let Some(parent) = path.parent() {
             fs::create_dir_all(parent)

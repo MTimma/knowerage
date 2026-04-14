@@ -12,15 +12,30 @@ use crate::types::KnowerageError;
 
 /// Default extensions when `extensions` is omitted or empty (lowercase, no dot).
 pub const DEFAULT_EXTENSIONS: &[&str] = &[
-    "java", "xml", "properties", "gradle", "kt", "groovy", "scala", "kts",
+    "java",
+    "xml",
+    "properties",
+    "gradle",
+    "kt",
+    "groovy",
+    "scala",
+    "kts",
 ];
 
 const EXCLUDED_DIR_NAMES: &[&str] = &[
-    ".git", "target", "node_modules", "dist", "build", "knowerage",
+    ".git",
+    "target",
+    "node_modules",
+    "dist",
+    "build",
+    "knowerage",
 ];
 
 pub fn default_extensions() -> Vec<String> {
-    DEFAULT_EXTENSIONS.iter().map(|s| (*s).to_string()).collect()
+    DEFAULT_EXTENSIONS
+        .iter()
+        .map(|s| (*s).to_string())
+        .collect()
 }
 
 pub fn normalize_extension_list(input: &[String]) -> Vec<String> {
@@ -68,10 +83,7 @@ pub fn project_files_and_lines(
         let Some(ext) = path.extension().and_then(|x| x.to_str()) else {
             continue;
         };
-        if !extensions
-            .iter()
-            .any(|x| x.eq_ignore_ascii_case(ext))
-        {
+        if !extensions.iter().any(|x| x.eq_ignore_ascii_case(ext)) {
             continue;
         }
         let content = match fs::read_to_string(path) {

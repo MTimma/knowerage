@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "MCP server for AI analysis coverage management",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MTimma/knowerage.git",
+    "directory": "npm/knowerage-mcp"
+  },
+  "bugs": { "url": "https://github.com/MTimma/knowerage/issues" },
+  "homepage": "https://github.com/MTimma/knowerage#readme",
   "files": ["index.js", "bin"],
   "bin": { "knowerage-mcp": "./bin/knowerage-mcp.js" },
   "main": "./index.js",

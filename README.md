@@ -2,6 +2,8 @@
 
 Local-first MCP server that tracks legacy code analysis coverage and freshness.
 
+**Source:** [github.com/MTimma/knowerage](https://github.com/MTimma/knowerage)
+
 ## Quick Start
 
 ### Install via npm

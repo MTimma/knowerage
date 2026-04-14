@@ -185,10 +185,7 @@ impl ExportBundle {
 
     /// First part’s TOC markdown.
     pub fn primary_toc(&self) -> &str {
-        self.parts
-            .first()
-            .map(|p| p.toc.as_str())
-            .unwrap_or("")
+        self.parts.first().map(|p| p.toc.as_str()).unwrap_or("")
     }
 }
 
@@ -268,11 +265,7 @@ impl ActivePart {
         let byte_len = combined.len();
         let toc = build_toc(&self.toc_rows);
         let paths = self.analysis_paths;
-        (
-            ExportBundlePart { toc, combined },
-            paths,
-            byte_len,
-        )
+        (ExportBundlePart { toc, combined }, paths, byte_len)
     }
 
     fn added_bytes_if_append(&self, content_len: usize) -> usize {
@@ -413,12 +406,7 @@ pub fn generate_bundle(
                 continue;
             }
 
-            active.append(
-                display_rel.clone(),
-                source_display,
-                ranges,
-                content.clone(),
-            );
+            active.append(display_rel.clone(), source_display, ranges, content.clone());
             file_entries.push(ExportFileEntry {
                 analysis_path: display_rel,
                 source_path: metadata.source_file,
@@ -476,7 +464,10 @@ pub fn generate_bundle(
 
 /// Writes all bundle parts and `manifest.json` under `output_dir`. Returns relative filenames
 /// (no directory prefix) in write order.
-pub fn write_bundle(bundle: &ExportBundle, output_dir: &Path) -> Result<Vec<String>, KnowerageError> {
+pub fn write_bundle(
+    bundle: &ExportBundle,
+    output_dir: &Path,
+) -> Result<Vec<String>, KnowerageError> {
     fs::create_dir_all(output_dir)
         .map_err(|e| KnowerageError::RegistryIo(format!("Failed to create output dir: {e}")))?;
 
@@ -651,9 +642,8 @@ mod tests {
         assert_eq!(bundle.manifest.files.len(), 1);
         assert_eq!(bundle.manifest.errors.len(), 1);
         assert!(
-            bundle.manifest.errors[0]
-                .error
-                .contains("E_PATH_TRAVERSAL") || bundle.manifest.errors[0].error.contains("..")
+            bundle.manifest.errors[0].error.contains("E_PATH_TRAVERSAL")
+                || bundle.manifest.errors[0].error.contains("..")
         );
     }
 
@@ -719,11 +709,7 @@ mod tests {
         let bundle = generate_bundle(&[PathBuf::from("big.md")], ws).unwrap();
         assert!(bundle.manifest.files.is_empty());
         assert_eq!(bundle.manifest.errors.len(), 1);
-        assert!(bundle
-            .manifest
-            .errors[0]
-            .error
-            .contains("exceeds max size"));
+        assert!(bundle.manifest.errors[0].error.contains("exceeds max size"));
     }
 
     #[test]
