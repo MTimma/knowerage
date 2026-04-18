@@ -206,7 +206,7 @@ pub fn select_files(
 
     let records = registry.load()?;
     let mut entries: Vec<_> = records.values().collect();
-    entries.sort_by(|a, b| b.record_updated_at.cmp(&a.record_updated_at));
+    entries.sort_by_key(|r| std::cmp::Reverse(r.record_updated_at));
 
     let paths: Vec<PathBuf> = entries.iter().map(|r| r.analysis_path.clone()).collect();
 
