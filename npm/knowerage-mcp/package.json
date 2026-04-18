@@ -1,7 +1,7 @@
 {
   "name": "knowerage-mcp",
   "version": "0.1.0",
-  "description": "MCP server for AI analysis coverage management",
+  "description": "Local MCP server for analysis doc coverage management",
   "license": "MIT",
   "repository": {
     "type": "git",
