@@ -4,11 +4,11 @@ const { PLATFORMS, getBinaryPath } = require('./index.js');
 
 describe('knowerage-mcp wrapper', () => {
   it('resolves correct platform package name for darwin-arm64', () => {
-    assert.strictEqual(PLATFORMS['darwin-arm64'], 'knowerage-mcp-darwin-arm64');
+    assert.strictEqual(PLATFORMS['darwin-arm64'], '@mtimma/knowerage-mcp-darwin-arm64');
   });
 
   it('resolves correct platform package name for linux-x64', () => {
-    assert.strictEqual(PLATFORMS['linux-x64'], 'knowerage-mcp-linux-x64');
+    assert.strictEqual(PLATFORMS['linux-x64'], '@mtimma/knowerage-mcp-linux-x64');
   });
 
   it('has no shell in spawn (verify code has shell: false)', () => {

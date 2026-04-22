@@ -1,8 +1,9 @@
 {
-  "name": "knowerage-mcp-darwin-x64",
+  "name": "@mtimma/knowerage-mcp-darwin-x64",
   "version": "1.0.0",
   "description": "Knowerage MCP binary for macOS Intel",
   "license": "MIT",
+  "publishConfig": { "access": "public" },
   "files": ["knowerage-mcp"],
   "os": ["darwin"],
   "cpu": ["x64"]

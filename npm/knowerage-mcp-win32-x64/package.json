@@ -1,8 +1,9 @@
 {
-  "name": "knowerage-mcp-win32-x64",
+  "name": "@mtimma/knowerage-mcp-win32-x64",
   "version": "1.0.0",
   "description": "Knowerage MCP binary for Windows x64",
   "license": "MIT",
+  "publishConfig": { "access": "public" },
   "files": ["knowerage-mcp.exe"],
   "os": ["win32"],
   "cpu": ["x64"]

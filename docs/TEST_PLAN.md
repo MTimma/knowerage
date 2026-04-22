@@ -64,7 +64,7 @@ All must pass before merge:
 ### Phase D: Export Bundle + npm Distribution
 - NotebookLM export bundle (toc.md, combined.md, manifest)
 - npm wrapper package with platform binaries
-- Acceptance: `npx knowerage-mcp` runs the server
+- Acceptance: `npx @mtimma/knowerage-mcp` runs the server
 
 ## Rollback Strategy
 

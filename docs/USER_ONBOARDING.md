@@ -8,7 +8,7 @@ This document covers one-time setup, agent guidance, and "works out of the box" 
 
 ### 1.1 Install the MCP Server
 
-- Install the Knowerage MCP server via `npx knowerage-mcp` or build from source (`cargo build --release`). See [README](../README.md) for details.
+- Install the Knowerage MCP server via `npx @mtimma/knowerage-mcp` or build from source (`cargo build --release`). See [README](../README.md) for details.
 - Register it in your MCP host’s server configuration (see section 2).
 
 ### 1.2 Workspace Root
@@ -48,7 +48,7 @@ Add a server entry in the JSON (or equivalent) your MCP client expects—for exa
   "mcpServers": {
     "knowerage": {
       "command": "npx",
-      "args": ["knowerage-mcp"],
+      "args": ["@mtimma/knowerage-mcp"],
       "env": {
         "KNOWERAGE_WORKSPACE_ROOT": "${workspaceFolder}",
         "KNOWERAGE_AUTO_FULL_RECONCILE": "true"

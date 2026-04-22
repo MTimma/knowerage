@@ -7,14 +7,14 @@
 
 ## Objective
 
-Provide an npm package that installs the Knowerage MCP server via `npx knowerage-mcp`. The Node wrapper spawns the Rust binary; binaries are distributed as platform-specific optionalDependencies (no postinstall downloads from external URLs).
+Provide an npm package that installs the Knowerage MCP server via `npx @mtimma/knowerage-mcp`. The Node wrapper spawns the Rust binary; binaries are distributed as platform-specific optionalDependencies under the `@mtimma` scope (no postinstall downloads from external URLs).
 
 ---
 
 ## Deliverables
 
 - Thin Node.js wrapper that locates and spawns the Rust binary
-- npm package `knowerage-mcp` with `bin` entry
+- npm package `@mtimma/knowerage-mcp` with `bin` entry
 - Platform-specific packages via `optionalDependencies` (see table below)
 - `mcpName` in package.json for MCP Registry compatibility
 - Clear error when binary for current platform is missing
@@ -58,7 +58,7 @@ Each platform package contains only the binary (e.g. `knowerage-mcp` or `knowera
 ## Wrapper Logic
 
 1. Resolve platform: `process.platform` (darwin, linux, win32) + `process.arch` (arm64, x64)
-2. Require the matching platform package (e.g. `require('knowerage-mcp-darwin-arm64')`)
+2. Require the matching platform package (e.g. `require('@mtimma/knowerage-mcp-darwin-arm64')`)
 3. Get binary path from the package's `bin` or exported path
 4. Spawn: `child_process.spawn(binaryPath, process.argv.slice(2), { stdio: 'inherit', shell: false })`
 5. Forward exit code: `process.exit(child.exitCode ?? 1)`
@@ -135,7 +135,7 @@ Each platform package contains only the binary (e.g. `knowerage-mcp` or `knowera
 
 ## Acceptance Criteria
 
-- [ ] `npx knowerage-mcp` runs the Rust MCP server on supported platforms
+- [ ] `npx @mtimma/knowerage-mcp` runs the Rust MCP server on supported platforms
 - [ ] No postinstall downloads from external URLs
 - [ ] `mcpName` present for MCP Registry
 - [ ] Clear error when platform unsupported or binary missing
