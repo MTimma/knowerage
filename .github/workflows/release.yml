@@ -66,12 +66,13 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Publish platform packages
         run: |
+          set -euo pipefail
           for pkg in npm/knowerage-mcp-*/; do
-            cd "$pkg" && npm publish --access public && cd ../..
+            (cd "$pkg" && npm publish --access public)
           done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish main package
-        run: cd npm/knowerage-mcp && npm publish --access public
+        run: (cd npm/knowerage-mcp && npm publish --access public)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
