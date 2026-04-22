@@ -1,8 +1,9 @@
 {
-  "name": "knowerage-mcp-win32-arm64",
+  "name": "@mtimma/knowerage-mcp-win32-arm64",
   "version": "1.0.0",
   "description": "Knowerage MCP binary for Windows ARM64",
   "license": "MIT",
+  "publishConfig": { "access": "public" },
   "files": ["knowerage-mcp.exe"],
   "os": ["win32"],
   "cpu": ["arm64"]
