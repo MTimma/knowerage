@@ -16,7 +16,7 @@ All must pass before merge:
 - [ ] `cargo test` — all 68 Rust tests pass
 - [ ] `cargo clippy --all-targets -- -D warnings` — no warnings
 - [ ] `cargo fmt -- --check` — formatted
-- [ ] `node --test npm/knowerage-mcp/test.js` — 5 Node tests pass
+- [ ] `node --test npm/knowerage/test.js` — 5 Node tests pass
 - [ ] No path traversal/security bypass in integration tests
 - [ ] Deterministic output for same inputs
 
@@ -64,7 +64,7 @@ All must pass before merge:
 ### Phase D: Export Bundle + npm Distribution
 - NotebookLM export bundle (toc.md, combined.md, manifest)
 - npm wrapper package with platform binaries
-- Acceptance: `npx @mtimma/knowerage-mcp` runs the server
+- Acceptance: `npx @mtimma/knowerage` runs the server
 
 ## Rollback Strategy
 

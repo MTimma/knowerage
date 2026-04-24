@@ -712,7 +712,7 @@ impl McpServer {
                     "protocolVersion": "2024-11-05",
                     "capabilities": { "tools": {} },
                     "serverInfo": {
-                        "name": "knowerage-mcp",
+                        "name": "knowerage",
                         "version": env!("CARGO_PKG_VERSION")
                     },
                     "instructions": "Knowerage is enabled: treat legacy/source-code analysis and documentation tasks as Knowerage workflows. Do not create knowerage/analysis/*.md with plain file writes alone or hand-edit knowerage/registry.json. For each analysis: (1) knowerage.create_or_update_doc with source_path, covered_lines, and frontmatter-consistent content; (2) knowerage.reconcile_record on that analysis_path. For inventory/gaps use knowerage.list_registry, knowerage.get_file_status, knowerage.coverage_overview, or knowerage.list_stale instead of reading registry.json manually. After bulk source changes, knowerage.reconcile_all. For NotebookLM-style bulk export of selected analyses to markdown parts under a directory, use knowerage.generate_bundle (see contracts)."

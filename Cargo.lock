@@ -438,7 +438,7 @@ dependencies = [
 
 [[package]]
 name = "knowerage-mcp"
-version = "1.0.1"
+version = "1.0.0"
 dependencies = [
  "chrono",
  "env_logger",

@@ -1,7 +1,7 @@
 {
-  "name": "@mtimma/knowerage-mcp-linux-x64",
-  "version": "1.0.1",
-  "description": "Knowerage MCP binary for Linux x64",
+  "name": "@mtimma/knowerage-linux-x64",
+  "version": "1.0.0",
+  "description": "Knowerage binary for Linux x64",
   "license": "MIT",
   "publishConfig": { "access": "public" },
   "files": ["knowerage-mcp"],

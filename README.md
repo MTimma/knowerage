@@ -8,7 +8,7 @@ Local-first MCP server that tracks legacy code analysis coverage and freshness.
 
 ### Install via npm
 ```
-npx @mtimma/knowerage-mcp
+npx @mtimma/knowerage
 ```
 
 ### Or build from source
@@ -26,7 +26,7 @@ Register Knowerage wherever your MCP host expects server definitions (for exampl
   "mcpServers": {
     "knowerage": {
       "command": "npx",
-      "args": ["@mtimma/knowerage-mcp"],
+      "args": ["@mtimma/knowerage"],
       "env": {
         "KNOWERAGE_WORKSPACE_ROOT": "${workspaceFolder}",
         "KNOWERAGE_AUTO_FULL_RECONCILE": "true"

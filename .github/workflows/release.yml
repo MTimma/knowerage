@@ -11,22 +11,22 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            npm_pkg: knowerage-mcp-linux-x64
+            npm_pkg: knowerage-linux-x64
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            npm_pkg: knowerage-mcp-linux-arm64-gnu
+            npm_pkg: knowerage-linux-arm64-gnu
           - os: macos-latest
             target: aarch64-apple-darwin
-            npm_pkg: knowerage-mcp-darwin-arm64
+            npm_pkg: knowerage-darwin-arm64
           - os: macos-latest
             target: x86_64-apple-darwin
-            npm_pkg: knowerage-mcp-darwin-x64
+            npm_pkg: knowerage-darwin-x64
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            npm_pkg: knowerage-mcp-win32-x64
+            npm_pkg: knowerage-win32-x64
           - os: windows-latest
             target: aarch64-pc-windows-msvc
-            npm_pkg: knowerage-mcp-win32-arm64
+            npm_pkg: knowerage-win32-arm64
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -58,7 +58,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          pattern: knowerage-mcp-*
+          pattern: knowerage-*
           path: npm
       - uses: actions/setup-node@v4
         with:
@@ -67,12 +67,58 @@ jobs:
       - name: Publish platform packages
         run: |
           set -euo pipefail
-          for pkg in npm/knowerage-mcp-*/; do
-            (cd "$pkg" && npm publish --access public)
+          # npm can return 409 if the next publish runs before the registry finishes
+          # the previous packument. Space publishes out and retry transient failures.
+          npm_publish_retry() {
+            local dir="$1"
+            local attempt=1
+            local max=6
+            local base_wait=20
+            while [ "$attempt" -le "$max" ]; do
+              if (cd "$dir" && npm publish --access public); then
+                return 0
+              fi
+              code=$?
+              if [ "$attempt" -eq "$max" ]; then
+                echo "npm publish failed in $dir after $max attempts (last exit $code)" >&2
+                return "$code"
+              fi
+              w=$((base_wait * attempt))
+              echo "Publish attempt $attempt failed; waiting ${w}s before retry..."
+              sleep "$w"
+              attempt=$((attempt + 1))
+            done
+          }
+          first=1
+          for pkg in $(for d in npm/knowerage-*/; do printf '%s\n' "$d"; done | sort); do
+            if [ "$first" -ne 1 ]; then
+              echo "Waiting before next platform package (registry processing)..."
+              sleep 20
+            fi
+            npm_publish_retry "$pkg"
+            first=0
           done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish main package
-        run: (cd npm/knowerage-mcp && npm publish --access public)
+        run: |
+          set -euo pipefail
+          attempt=1
+          max=6
+          base_wait=20
+          while [ "$attempt" -le "$max" ]; do
+            if (cd npm/knowerage && npm publish --access public); then
+              exit 0
+            fi
+            code=$?
+            if [ "$attempt" -eq "$max" ]; then
+              echo "npm publish failed for main package after $max attempts (last exit $code)" >&2
+              exit "$code"
+            fi
+            w=$((base_wait * attempt))
+            echo "Publish attempt $attempt failed; waiting ${w}s before retry..."
+            sleep "$w"
+            attempt=$((attempt + 1))
+          done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -69,7 +69,7 @@ Practical guidelines for code style, testing, and security. Prioritizes **usabil
 
 | Goal | Approach |
 |------|----------|
-| One-command run | `npx @mtimma/knowerage-mcp` |
+| One-command run | `npx @mtimma/knowerage` |
 | Registry location | `knowerage/registry.json` at root of project being documented/analysed |
 | Clear error when misconfigured | "Workspace root not found: X" |
 | Pin versions | Keep `package-lock.json` committed |

@@ -1,20 +1,20 @@
 const { describe, it } = require('node:test');
 const assert = require('node:assert');
-const { PLATFORMS, getBinaryPath } = require('./index.js');
+const { PLATFORMS } = require('./index.js');
 
-describe('knowerage-mcp wrapper', () => {
+describe('knowerage wrapper', () => {
   it('resolves correct platform package name for darwin-arm64', () => {
-    assert.strictEqual(PLATFORMS['darwin-arm64'], '@mtimma/knowerage-mcp-darwin-arm64');
+    assert.strictEqual(PLATFORMS['darwin-arm64'], '@mtimma/knowerage-darwin-arm64');
   });
 
   it('resolves correct platform package name for linux-x64', () => {
-    assert.strictEqual(PLATFORMS['linux-x64'], '@mtimma/knowerage-mcp-linux-x64');
+    assert.strictEqual(PLATFORMS['linux-x64'], '@mtimma/knowerage-linux-x64');
   });
 
   it('has no shell in spawn (verify code has shell: false)', () => {
     const fs = require('fs');
     const path = require('path');
-    const binContent = fs.readFileSync(path.join(__dirname, 'bin', 'knowerage-mcp.js'), 'utf8');
+    const binContent = fs.readFileSync(path.join(__dirname, 'bin', 'knowerage.js'), 'utf8');
     assert.ok(binContent.includes('shell: false'), 'spawn must use shell: false');
   });
 

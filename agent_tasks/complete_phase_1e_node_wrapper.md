@@ -7,14 +7,14 @@
 
 ## Objective
 
-Provide an npm package that installs the Knowerage MCP server via `npx @mtimma/knowerage-mcp`. The Node wrapper spawns the Rust binary; binaries are distributed as platform-specific optionalDependencies under the `@mtimma` scope (no postinstall downloads from external URLs).
+Provide an npm package that installs the Knowerage MCP server via `npx @mtimma/knowerage`. The Node wrapper spawns the Rust binary; binaries are distributed as platform-specific optionalDependencies under the `@mtimma` scope (no postinstall downloads from external URLs).
 
 ---
 
 ## Deliverables
 
 - Thin Node.js wrapper that locates and spawns the Rust binary
-- npm package `@mtimma/knowerage-mcp` with `bin` entry
+- npm package `@mtimma/knowerage` with `bin` entry
 - Platform-specific packages via `optionalDependencies` (see table below)
 - `mcpName` in package.json for MCP Registry compatibility
 - Clear error when binary for current platform is missing
@@ -24,18 +24,18 @@ Provide an npm package that installs the Knowerage MCP server via `npx @mtimma/k
 ## Package Structure
 
 ```
-knowerage-mcp/                    # Main package (wrapper)
+knowerage/                    # Main package (wrapper)
 ├── package.json
-├── index.js                      # Entry: spawn binary, forward stdio
+├── index.js                  # Entry: resolve binary path
 ├── bin/
-│   └── knowerage-mcp             # Symlink or script to index.js
+│   └── knowerage.js         # Spawns Rust binary; npm bin name: `knowerage`
 └── optionalDependencies:
-    ├── knowerage-mcp-darwin-arm64
-    ├── knowerage-mcp-darwin-x64
-    ├── knowerage-mcp-linux-x64
-    ├── knowerage-mcp-linux-arm64-gnu
-    ├── knowerage-mcp-win32-x64
-    └── knowerage-mcp-win32-arm64  # optional, add when needed
+    ├── knowerage-darwin-arm64
+    ├── knowerage-darwin-x64
+    ├── knowerage-linux-x64
+    ├── knowerage-linux-arm64-gnu
+    ├── knowerage-win32-x64
+    └── knowerage-win32-arm64
 ```
 
 ---
@@ -44,22 +44,22 @@ knowerage-mcp/                    # Main package (wrapper)
 
 | Package name | Target | OS | Arch |
 |-------------|--------|-----|------|
-| `knowerage-mcp-darwin-arm64` | `aarch64-apple-darwin` | macOS | Apple Silicon |
-| `knowerage-mcp-darwin-x64` | `x86_64-apple-darwin` | macOS | Intel |
-| `knowerage-mcp-linux-x64` | `x86_64-unknown-linux-gnu` | Linux | x64 |
-| `knowerage-mcp-linux-arm64-gnu` | `aarch64-unknown-linux-gnu` | Linux | ARM64 |
-| `knowerage-mcp-win32-x64` | `x86_64-pc-windows-msvc` | Windows | x64 |
-| `knowerage-mcp-win32-arm64` | `aarch64-pc-windows-msvc` | Windows | ARM64 |
+| `knowerage-darwin-arm64` | `aarch64-apple-darwin` | macOS | Apple Silicon |
+| `knowerage-darwin-x64` | `x86_64-apple-darwin` | macOS | Intel |
+| `knowerage-linux-x64` | `x86_64-unknown-linux-gnu` | Linux | x64 |
+| `knowerage-linux-arm64-gnu` | `aarch64-unknown-linux-gnu` | Linux | ARM64 |
+| `knowerage-win32-x64` | `x86_64-pc-windows-msvc` | Windows | x64 |
+| `knowerage-win32-arm64` | `aarch64-pc-windows-msvc` | Windows | ARM64 |
 
-Each platform package contains only the binary (e.g. `knowerage-mcp` or `knowerage-mcp.exe`) and a minimal `package.json` with `bin` pointing to it.
+Each platform package contains only the binary (e.g. `knowerage-mcp` or `knowerage-mcp.exe` from Cargo) and a minimal `package.json` (no `bin`; main package resolves the path).
 
 ---
 
 ## Wrapper Logic
 
 1. Resolve platform: `process.platform` (darwin, linux, win32) + `process.arch` (arm64, x64)
-2. Require the matching platform package (e.g. `require('@mtimma/knowerage-mcp-darwin-arm64')`)
-3. Get binary path from the package's `bin` or exported path
+2. Require the matching platform package (e.g. `require.resolve('@mtimma/knowerage-darwin-arm64/package.json')`)
+3. Get binary path from the package directory
 4. Spawn: `child_process.spawn(binaryPath, process.argv.slice(2), { stdio: 'inherit', shell: false })`
 5. Forward exit code: `process.exit(child.exitCode ?? 1)`
 6. If platform package is missing: print clear error and exit 1
@@ -94,17 +94,17 @@ Each platform package contains only the binary (e.g. `knowerage-mcp` or `knowera
 
 ```json
 {
-  "name": "knowerage-mcp",
+  "name": "@mtimma/knowerage",
   "version": "0.1.0",
   "description": "MCP server for AI analysis coverage management",
-  "bin": { "knowerage-mcp": "./bin/knowerage-mcp.js" },
-  "mcpName": "io.github.USERNAME/knowerage",
+  "bin": { "knowerage": "./bin/knowerage.js" },
+  "mcpName": "m.timma/knowerage",
   "optionalDependencies": {
-    "knowerage-mcp-darwin-arm64": "0.1.0",
-    "knowerage-mcp-darwin-x64": "0.1.0",
-    "knowerage-mcp-linux-x64": "0.1.0",
-    "knowerage-mcp-linux-arm64-gnu": "0.1.0",
-    "knowerage-mcp-win32-x64": "0.1.0"
+    "@mtimma/knowerage-darwin-arm64": "0.1.0",
+    "@mtimma/knowerage-darwin-x64": "0.1.0",
+    "@mtimma/knowerage-linux-x64": "0.1.0",
+    "@mtimma/knowerage-linux-arm64-gnu": "0.1.0",
+    "@mtimma/knowerage-win32-x64": "0.1.0"
   },
   "engines": { "node": ">=18" }
 }
@@ -116,7 +116,7 @@ Each platform package contains only the binary (e.g. `knowerage-mcp` or `knowera
 
 | # | Test | Input | Expected |
 |---|------|-------|----------|
-| 1 | Platform resolution | `darwin` + `arm64` | Resolves to `knowerage-mcp-darwin-arm64` |
+| 1 | Platform resolution | `darwin` + `arm64` | Resolves to `knowerage-darwin-arm64` |
 | 2 | Missing platform package | Unsupported platform | Clear error message, exit 1 |
 | 3 | Spawn uses shell: false | Any | No shell invoked |
 | 4 | Exit code forwarded | Child exits 0 | Wrapper exits 0 |
@@ -129,13 +129,13 @@ Each platform package contains only the binary (e.g. `knowerage-mcp` or `knowera
 1. GitHub Actions: matrix `[ubuntu, macos, windows]`
 2. Each job: build Rust binary for that OS, pack into platform package
 3. Publish platform packages to npm (version in sync with main package)
-4. Publish main `knowerage-mcp` package (depends on platform packages)
+4. Publish main `knowerage` package (depends on platform packages)
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `npx @mtimma/knowerage-mcp` runs the Rust MCP server on supported platforms
+- [ ] `npx @mtimma/knowerage` runs the Rust MCP server on supported platforms
 - [ ] No postinstall downloads from external URLs
 - [ ] `mcpName` present for MCP Registry
 - [ ] Clear error when platform unsupported or binary missing

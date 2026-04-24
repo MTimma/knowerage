@@ -9,7 +9,7 @@ const child = spawn(binaryPath, process.argv.slice(2), {
 });
 
 child.on('error', (err) => {
-  console.error(`Failed to start knowerage-mcp: ${err.message}`);
+  console.error(`Failed to start knowerage: ${err.message}`);
   process.exit(1);
 });
 

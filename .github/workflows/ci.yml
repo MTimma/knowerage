@@ -30,4 +30,4 @@ jobs:
         with:
           node-version: '20'
       - name: Test wrapper
-        run: node --test npm/knowerage-mcp/test.js
+        run: node --test npm/knowerage/test.js
