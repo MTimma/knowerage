@@ -1,6 +1,6 @@
 {
   "name": "@mtimma/knowerage-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Local MCP server for analysis doc coverage management",
   "license": "MIT",
   "repository": {
@@ -16,12 +16,12 @@
   "main": "./index.js",
   "mcpName": "m.timma/knowerage",
   "optionalDependencies": {
-    "@mtimma/knowerage-mcp-darwin-arm64": "1.0.0",
-    "@mtimma/knowerage-mcp-darwin-x64": "1.0.0",
-    "@mtimma/knowerage-mcp-linux-x64": "1.0.0",
-    "@mtimma/knowerage-mcp-linux-arm64-gnu": "1.0.0",
-    "@mtimma/knowerage-mcp-win32-x64": "1.0.0",
-    "@mtimma/knowerage-mcp-win32-arm64": "1.0.0"
+    "@mtimma/knowerage-mcp-darwin-arm64": "1.0.1",
+    "@mtimma/knowerage-mcp-darwin-x64": "1.0.1",
+    "@mtimma/knowerage-mcp-linux-x64": "1.0.1",
+    "@mtimma/knowerage-mcp-linux-arm64-gnu": "1.0.1",
+    "@mtimma/knowerage-mcp-win32-x64": "1.0.1",
+    "@mtimma/knowerage-mcp-win32-arm64": "1.0.1"
   },
   "engines": { "node": ">=18" },
   "scripts": { "test": "node --test test.js" }

@@ -1,6 +1,6 @@
 {
   "name": "@mtimma/knowerage-mcp-linux-arm64-gnu",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Knowerage MCP binary for Linux ARM64 GNU",
   "license": "MIT",
   "publishConfig": { "access": "public" },

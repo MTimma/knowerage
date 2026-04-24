@@ -1,6 +1,6 @@
 {
   "name": "@mtimma/knowerage-mcp-darwin-arm64",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Knowerage MCP binary for macOS Apple Silicon",
   "license": "MIT",
   "publishConfig": { "access": "public" },
