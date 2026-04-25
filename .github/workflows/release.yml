@@ -64,6 +64,15 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
+      - name: Fix executable bit for Unix binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in npm/knowerage-*/knowerage-mcp; do
+            if [ -f "$f" ]; then
+              chmod 755 "$f"
+            fi
+          done
       - name: Publish platform packages
         run: |
           set -euo pipefail

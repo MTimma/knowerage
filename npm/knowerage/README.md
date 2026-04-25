@@ -25,7 +25,7 @@ Register Knowerage wherever your MCP host expects server definitions (for exampl
   "mcpServers": {
     "knowerage": {
       "command": "npx",
-      "args": ["@mtimma/knowerage"],
+      "args": ["-y","@mtimma/knowerage"],
       "env": {
         "KNOWERAGE_WORKSPACE_ROOT": "${workspaceFolder}",
         "KNOWERAGE_AUTO_FULL_RECONCILE": "true"
