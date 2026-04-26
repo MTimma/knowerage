@@ -1,6 +1,6 @@
 {
   "name": "@mtimma/knowerage-linux-x64",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Knowerage binary for Linux x64",
   "license": "MIT",
   "publishConfig": { "access": "public" },
