@@ -1,6 +1,6 @@
 {
   "name": "@mtimma/knowerage-linux-arm64-gnu",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Knowerage binary for Linux ARM64 (glibc)",
   "license": "MIT",
   "publishConfig": { "access": "public" },
