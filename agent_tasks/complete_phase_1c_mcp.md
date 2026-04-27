@@ -25,14 +25,14 @@ Implement MCP server exposing tools for analysis creation, reconciliation, and c
 
 | Tool | Calls | Path params |
 |------|-------|-------------|
-| `knowerage.create_or_update_doc` | Parser validation, file write | `analysis_path`, `source_path` |
-| `knowerage.parse_doc_metadata` | Parser | `analysis_path` |
-| `knowerage.reconcile_record` | Registry | `analysis_path` |
-| `knowerage.reconcile_all` | Registry | `analysis_glob` (default: `knowerage/analysis/**/*.md`) |
-| `knowerage.get_file_status` | Registry | `source_path` |
-| `knowerage.list_stale` | Registry | — |
-| `knowerage.get_tree` | Registry | `root`, `group_by` |
-| `registry.export_report` | Registry + file write | `output_path`, `format` |
+| `knowerage_create_or_update_doc` | Parser validation, file write | `analysis_path`, `source_path` |
+| `knowerage_parse_doc_metadata` | Parser | `analysis_path` |
+| `knowerage_reconcile_record` | Registry | `analysis_path` |
+| `knowerage_reconcile_all` | Registry | `analysis_glob` (default: `knowerage/analysis/**/*.md`) |
+| `knowerage_get_file_status` | Registry | `source_path` |
+| `knowerage_list_stale` | Registry | — |
+| `knowerage_get_tree` | Registry | `root`, `group_by` |
+| `registry_export_report` | Registry + file write | `output_path`, `format` |
 
 ---
 

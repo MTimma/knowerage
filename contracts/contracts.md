@@ -57,19 +57,19 @@ analysis_date: "2026-03-01T10:25:00Z"        # required, ISO 8601
 
 | Tool                              | Purpose                                          |
 | --------------------------------- | ------------------------------------------------ |
-| `knowerage.create_or_update_doc`  | Create/update analysis document with metadata    |
-| `knowerage.parse_doc_metadata`    | Parse frontmatter + validate coverage            |
-| `knowerage.reconcile_record`      | Reconcile one analysis record                    |
-| `knowerage.reconcile_all`         | Full rescan/rebuild for all analysis files        |
-| `knowerage.get_file_status`       | Analyzed vs missing ranges for one source        |
-| `knowerage.list_stale`            | List stale/problematic records                   |
-| `knowerage.list_registry`         | Full registry snapshot (`records` = same shape as `registry.json`) |
-| `knowerage.get_tree`              | Tree/grouped coverage for UI                     |
-| `knowerage.coverage_overview`     | Batch coverage overview for all sources          |
-| `registry.export_report`          | Export snapshot (JSON/YAML/TXT/HTML)             |
-| `knowerage.generate_bundle`       | Export selected analyses to `toc*.md` + `combined*.md` + `manifest.json` |
+| `knowerage_create_or_update_doc`  | Create/update analysis document with metadata    |
+| `knowerage_parse_doc_metadata`    | Parse frontmatter + validate coverage            |
+| `knowerage_reconcile_record`      | Reconcile one analysis record                    |
+| `knowerage_reconcile_all`         | Full rescan/rebuild for all analysis files        |
+| `knowerage_get_file_status`       | Analyzed vs missing ranges for one source        |
+| `knowerage_list_stale`            | List stale/problematic records                   |
+| `knowerage_list_registry`         | Full registry snapshot (`records` = same shape as `registry.json`) |
+| `knowerage_get_tree`              | Tree/grouped coverage for UI                     |
+| `knowerage_coverage_overview`     | Batch coverage overview for all sources          |
+| `registry_export_report`          | Export snapshot (JSON/YAML/TXT/HTML)             |
+| `knowerage_generate_bundle`       | Export selected analyses to `toc*.md` + `combined*.md` + `manifest.json` |
 
-### `knowerage.generate_bundle`
+### `knowerage_generate_bundle`
 
 **Purpose:** Package selected analysis markdown files (with YAML frontmatter) for bulk ingestion (e.g. NotebookLM). Writes under `output_dir` relative to the workspace.
 
@@ -150,7 +150,7 @@ analysis_date: "2026-03-01T10:25:00Z"        # required, ISO 8601
 
 **Partial failure:** Unreadable paths, parse errors, or oversize files are listed in `manifest.errors`; valid paths are still exported.
 
-### `knowerage.get_file_status` Output Schema
+### `knowerage_get_file_status` Output Schema
 
 ```json
 {
@@ -172,7 +172,7 @@ analysis_date: "2026-03-01T10:25:00Z"        # required, ISO 8601
 }
 ```
 
-### `knowerage.list_registry`
+### `knowerage_list_registry`
 
 **Purpose:** Return the full registry for agents in one JSON value. Prefer this over reading `knowerage/registry.json` directly.
 
@@ -192,7 +192,7 @@ analysis_date: "2026-03-01T10:25:00Z"        # required, ISO 8601
 | `record_count`  | number | Number of entries in `records`. |
 | `records`       | object | Same shape as the root object of `registry.json`: keys = analysis paths, values = [record shape](#record-shape). Keys are sorted lexicographically. |
 
-### `knowerage.coverage_overview`
+### `knowerage_coverage_overview`
 
 **Input (optional)**
 
@@ -207,7 +207,7 @@ When `extensions` is set, it applies consistently to: rows in `sources`, entries
 - Walks the workspace recursively from the project root.
 - **Skips** directories named (at any depth): `.git`, `target`, `node_modules`, `dist`, `build`, `knowerage` (so analysis artifacts are not counted as project legacy sources).
 - Counts only files whose extension matches the effective extension list (case-insensitive).
-- **Line count** per file: `content.lines().count()` (same as `knowerage.get_file_status`). Files that cannot be read as UTF-8 are **skipped** (not counted).
+- **Line count** per file: `content.lines().count()` (same as `knowerage_get_file_status`). Files that cannot be read as UTF-8 are **skipped** (not counted).
 
 **Behavior**
 
@@ -256,7 +256,7 @@ Returns a batch overview. **Coverage calculation uses fresh records only**; stal
 ### MCP App Limitations
 
 - The iframe sandbox cannot open local workspace files. Analysis file paths are shown as copyable text with a copy-to-clipboard button.
-- The MCP App requires a host that supports `_meta.ui.resourceUri` on tool definitions and the `ui://` resource protocol. Non-supporting hosts still receive a text tool result and can use `registry.export_report` for offline HTML reports or `knowerage.generate_bundle` for chunked analysis markdown export.
+- The MCP App requires a host that supports `_meta.ui.resourceUri` on tool definitions and the `ui://` resource protocol. Non-supporting hosts still receive a text tool result and can use `registry_export_report` for offline HTML reports or `knowerage_generate_bundle` for chunked analysis markdown export.
 
 ---
 

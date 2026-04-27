@@ -29,7 +29,7 @@ fn test_full_flow_create_reconcile_status() {
 
     let result = server
         .dispatch_tool(
-            "knowerage.create_or_update_doc",
+            "knowerage_create_or_update_doc",
             json!({
                 "analysis_path": "knowerage/analysis/main.md",
                 "source_path": "src/Main.java",
@@ -42,7 +42,7 @@ fn test_full_flow_create_reconcile_status() {
 
     let rec = server
         .dispatch_tool(
-            "knowerage.reconcile_record",
+            "knowerage_reconcile_record",
             json!({
                 "analysis_path": "knowerage/analysis/main.md"
             }),
@@ -52,7 +52,7 @@ fn test_full_flow_create_reconcile_status() {
 
     let status = server
         .dispatch_tool(
-            "knowerage.get_file_status",
+            "knowerage_get_file_status",
             json!({
                 "source_path": "src/Main.java"
             }),
@@ -64,7 +64,7 @@ fn test_full_flow_create_reconcile_status() {
     assert_eq!(status["coverage_percent"], 50.0);
 
     let listed = server
-        .dispatch_tool("knowerage.list_registry", json!({}))
+        .dispatch_tool("knowerage_list_registry", json!({}))
         .unwrap();
     assert_eq!(listed["record_count"], 1);
     assert_eq!(listed["registry_file"], "knowerage/registry.json");
@@ -91,7 +91,7 @@ fn test_malformed_analysis_parse_error() {
 
     let err = server
         .dispatch_tool(
-            "knowerage.parse_doc_metadata",
+            "knowerage_parse_doc_metadata",
             json!({
                 "analysis_path": "knowerage/analysis/bad.md"
             }),
@@ -107,7 +107,7 @@ fn test_path_traversal_in_tool_call() {
 
     let err = server
         .dispatch_tool(
-            "knowerage.create_or_update_doc",
+            "knowerage_create_or_update_doc",
             json!({
                 "analysis_path": "../../x",
                 "source_path": "src/test.java",
@@ -127,7 +127,7 @@ fn test_list_stale_returns_filtered() {
     create_source(&tmp, "src/A.java", "class A {}");
     server
         .dispatch_tool(
-            "knowerage.create_or_update_doc",
+            "knowerage_create_or_update_doc",
             json!({
                 "analysis_path": "knowerage/analysis/a.md",
                 "source_path": "src/A.java",
@@ -138,7 +138,7 @@ fn test_list_stale_returns_filtered() {
         .unwrap();
     server
         .dispatch_tool(
-            "knowerage.reconcile_record",
+            "knowerage_reconcile_record",
             json!({ "analysis_path": "knowerage/analysis/a.md" }),
         )
         .unwrap();
@@ -146,7 +146,7 @@ fn test_list_stale_returns_filtered() {
     create_source(&tmp, "src/B.java", "class B {}");
     server
         .dispatch_tool(
-            "knowerage.create_or_update_doc",
+            "knowerage_create_or_update_doc",
             json!({
                 "analysis_path": "knowerage/analysis/b.md",
                 "source_path": "src/B.java",
@@ -157,21 +157,21 @@ fn test_list_stale_returns_filtered() {
         .unwrap();
     server
         .dispatch_tool(
-            "knowerage.reconcile_record",
+            "knowerage_reconcile_record",
             json!({ "analysis_path": "knowerage/analysis/b.md" }),
         )
         .unwrap();
     create_source(&tmp, "src/B.java", "class B { modified }");
     server
         .dispatch_tool(
-            "knowerage.reconcile_record",
+            "knowerage_reconcile_record",
             json!({ "analysis_path": "knowerage/analysis/b.md" }),
         )
         .unwrap();
 
     let stale = server
         .dispatch_tool(
-            "knowerage.list_stale",
+            "knowerage_list_stale",
             json!({
                 "statuses": ["stale_src"]
             }),
@@ -198,7 +198,7 @@ fn test_get_tree_with_group_by() {
     ] {
         server
             .dispatch_tool(
-                "knowerage.create_or_update_doc",
+                "knowerage_create_or_update_doc",
                 json!({
                     "analysis_path": analysis,
                     "source_path": source,
@@ -209,7 +209,7 @@ fn test_get_tree_with_group_by() {
             .unwrap();
         server
             .dispatch_tool(
-                "knowerage.reconcile_record",
+                "knowerage_reconcile_record",
                 json!({ "analysis_path": analysis }),
             )
             .unwrap();
@@ -217,7 +217,7 @@ fn test_get_tree_with_group_by() {
 
     let tree = server
         .dispatch_tool(
-            "knowerage.get_tree",
+            "knowerage_get_tree",
             json!({
                 "root": "src/",
                 "group_by": "directory"
@@ -237,7 +237,7 @@ fn test_export_report_produces_valid_file() {
     create_source(&tmp, "src/App.java", "class App {}");
     server
         .dispatch_tool(
-            "knowerage.create_or_update_doc",
+            "knowerage_create_or_update_doc",
             json!({
                 "analysis_path": "knowerage/analysis/app.md",
                 "source_path": "src/App.java",
@@ -248,14 +248,14 @@ fn test_export_report_produces_valid_file() {
         .unwrap();
     server
         .dispatch_tool(
-            "knowerage.reconcile_record",
+            "knowerage_reconcile_record",
             json!({ "analysis_path": "knowerage/analysis/app.md" }),
         )
         .unwrap();
 
     let result = server
         .dispatch_tool(
-            "registry.export_report",
+            "registry_export_report",
             json!({
                 "format": "json",
                 "output_path": "knowerage/report.json"
@@ -278,7 +278,7 @@ fn test_generate_bundle_integration() {
     create_source(&tmp, "src/Note.java", "class Note {}");
     server
         .dispatch_tool(
-            "knowerage.create_or_update_doc",
+            "knowerage_create_or_update_doc",
             json!({
                 "analysis_path": "knowerage/analysis/note.md",
                 "source_path": "src/Note.java",
@@ -290,7 +290,7 @@ fn test_generate_bundle_integration() {
 
     let result = server
         .dispatch_tool(
-            "knowerage.generate_bundle",
+            "knowerage_generate_bundle",
             json!({
                 "analysis_paths": ["knowerage/analysis/note.md"],
                 "output_dir": "knowerage/bundle-out"
@@ -315,7 +315,7 @@ fn test_coverage_overview_extensions_integration() {
 
     server
         .dispatch_tool(
-            "knowerage.create_or_update_doc",
+            "knowerage_create_or_update_doc",
             json!({
                 "analysis_path": "knowerage/analysis/app.md",
                 "source_path": "src/App.java",
@@ -326,14 +326,14 @@ fn test_coverage_overview_extensions_integration() {
         .unwrap();
     server
         .dispatch_tool(
-            "knowerage.reconcile_record",
+            "knowerage_reconcile_record",
             json!({ "analysis_path": "knowerage/analysis/app.md" }),
         )
         .unwrap();
 
     let java_only = server
         .dispatch_tool(
-            "knowerage.coverage_overview",
+            "knowerage_coverage_overview",
             json!({ "extensions": ["java"] }),
         )
         .unwrap();
@@ -342,7 +342,7 @@ fn test_coverage_overview_extensions_integration() {
     assert_eq!(java_only["sources"].as_array().unwrap().len(), 1);
 
     let defaults = server
-        .dispatch_tool("knowerage.coverage_overview", json!({}))
+        .dispatch_tool("knowerage_coverage_overview", json!({}))
         .unwrap();
     assert_eq!(defaults["summary"]["project_files"], 2);
     assert_eq!(defaults["summary"]["project_lines"], 5);

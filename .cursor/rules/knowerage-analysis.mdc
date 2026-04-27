@@ -9,11 +9,11 @@ alwaysApply: true
 
 When analyzing legacy code (Java, XML, or other source files):
 
-1. **Create analysis** — Use `knowerage.create_or_update_doc` to create an `.md` file with YAML frontmatter (`source_file`, `covered_lines`, `analysis_date`).
-2. **Reconcile** — Call `knowerage.reconcile_record` after creating or updating an analysis file (required every time).
-3. **Record coverage** — `knowerage.reconcile_record` updates `knowerage/registry.json` (no manual append needed).
+1. **Create analysis** — Use `knowerage_create_or_update_doc` to create an `.md` file with YAML frontmatter (`source_file`, `covered_lines`, `analysis_date`).
+2. **Reconcile** — Call `knowerage_reconcile_record` after creating or updating an analysis file (required every time).
+3. **Record coverage** — `knowerage_reconcile_record` updates `knowerage/registry.json` (no manual append needed).
 
-**Registry inventory** — To see every analysis↔source mapping, covered line ranges, and freshness in one response (same structure as `registry.json`), call `knowerage.list_registry` instead of reading the file manually.
+**Registry inventory** — To see every analysis↔source mapping, covered line ranges, and freshness in one response (same structure as `registry.json`), call `knowerage_list_registry` instead of reading the file manually.
 
 **"Analyze X" implies full workflow** — create analysis, reconcile, and record coverage. No need for the user to say "record coverage" or "use the MCP" explicitly.
 

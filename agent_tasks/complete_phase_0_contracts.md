@@ -79,16 +79,16 @@ analysis_date: "2026-03-01T10:25:00Z"        # required, ISO 8601
 
 | Tool                         | Purpose                                      |
 |------------------------------|----------------------------------------------|
-| `knowerage.create_or_update_doc`| Create/update analysis document with metadata |
-| `knowerage.parse_doc_metadata`  | Parse frontmatter + validate coverage        |
-| `knowerage.reconcile_record`  | Reconcile one analysis record                |
-| `knowerage.reconcile_all`     | Full rescan/rebuild for all analysis files   |
-| `knowerage.get_file_status`   | Analyzed vs missing ranges for one source    |
-| `knowerage.list_stale`        | List stale/problematic records               |
-| `knowerage.get_tree`          | Tree/grouped coverage for UI                 |
-| `registry.export_report`      | Export snapshot (JSON/YAML/TXT/HTML)         |
+| `knowerage_create_or_update_doc`| Create/update analysis document with metadata |
+| `knowerage_parse_doc_metadata`  | Parse frontmatter + validate coverage        |
+| `knowerage_reconcile_record`  | Reconcile one analysis record                |
+| `knowerage_reconcile_all`     | Full rescan/rebuild for all analysis files   |
+| `knowerage_get_file_status`   | Analyzed vs missing ranges for one source    |
+| `knowerage_list_stale`        | List stale/problematic records               |
+| `knowerage_get_tree`          | Tree/grouped coverage for UI                 |
+| `registry_export_report`      | Export snapshot (JSON/YAML/TXT/HTML)         |
 
-### `knowerage.get_file_status` — Output schema
+### `knowerage_get_file_status` — Output schema
 
 **Input**: `{ "source_path": "src/legacy/AuthService.java" }`
 

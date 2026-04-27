@@ -8,25 +8,25 @@ Use this MCP server when analyzing legacy code, tracking which source lines are 
 
 ### Typical flow
 
-1. **Create analysis** → `knowerage.create_or_update_doc` — Create or update an analysis document with frontmatter (source path, covered line ranges, timestamp).
-2. **Reconcile** → `knowerage.reconcile_record` — Reconcile the single analysis record into the registry (call after creating/updating one file).
-3. **Query coverage** → `knowerage.list_registry` (full registry snapshot, same shape as `registry.json`), `knowerage.get_file_status`, `knowerage.list_stale`, or `knowerage.get_tree` — Inventory analysis↔source links and ranges, or inspect per-file / stale / tree views.
+1. **Create analysis** → `knowerage_create_or_update_doc` — Create or update an analysis document with frontmatter (source path, covered line ranges, timestamp).
+2. **Reconcile** → `knowerage_reconcile_record` — Reconcile the single analysis record into the registry (call after creating/updating one file).
+3. **Query coverage** → `knowerage_list_registry` (full registry snapshot, same shape as `registry.json`), `knowerage_get_file_status`, `knowerage_list_stale`, or `knowerage_get_tree` — Inventory analysis↔source links and ranges, or inspect per-file / stale / tree views.
 
 ### When to call reconcile_record vs reconcile_all
 
 | Use case | Tool | When |
 |----------|------|------|
-| **Single file** | `knowerage.reconcile_record` | Right after creating or updating one analysis file. |
-| **Full recalculation** | `knowerage.reconcile_all` | When you need to rescan all analysis files and refresh the registry (e.g. after git pull, bulk edits, or to check if source code changed and analysis is stale). |
+| **Single file** | `knowerage_reconcile_record` | Right after creating or updating one analysis file. |
+| **Full recalculation** | `knowerage_reconcile_all` | When you need to rescan all analysis files and refresh the registry (e.g. after git pull, bulk edits, or to check if source code changed and analysis is stale). |
 
 ### Implicit workflow (analyze = full workflow)
 
 When the user asks to **analyze** or **document** a legacy source file, the agent should perform the full workflow without the user having to say "record coverage":
 
-Before or while planning work, use **`knowerage.get_tree`** to navigate what is already tracked: it returns the registry grouped by **source file directory** (each node lists `directory`, `record_count`, and full `records` with `analysis_path` and `source_path`). Pass optional **`root`** as a path prefix to zoom into a subtree of the code repo (e.g. `src/com/foo/`). To browse by analysis markdown layout under `knowerage/analysis/`, use **`knowerage.list_registry`** with **`analysis_path_prefix`**.
+Before or while planning work, use **`knowerage_get_tree`** to navigate what is already tracked: it returns the registry grouped by **source file directory** (each node lists `directory`, `record_count`, and full `records` with `analysis_path` and `source_path`). Pass optional **`root`** as a path prefix to zoom into a subtree of the code repo (e.g. `src/com/foo/`). To browse by analysis markdown layout under `knowerage/analysis/`, use **`knowerage_list_registry`** with **`analysis_path_prefix`**.
 
-1. Create analysis with `knowerage.create_or_update_doc` (source path, covered line ranges, timestamp).
-2. Reconcile with `knowerage.reconcile_record` — this updates **`knowerage/registry.json`** (machine-readable records; do not hand-edit).
+1. Create analysis with `knowerage_create_or_update_doc` (source path, covered line ranges, timestamp).
+2. Reconcile with `knowerage_reconcile_record` — this updates **`knowerage/registry.json`** (machine-readable records; do not hand-edit).
 
 The user does not need to say "record coverage" — the agent infers the full workflow from "analyze X" or "document X".
 
@@ -58,9 +58,9 @@ flowchart LR
 
 **How to run**:
 
-1. Call `knowerage.reconcile_all` with optional `analysis_glob` (default: `knowerage/analysis/**/*.md`).
+1. Call `knowerage_reconcile_all` with optional `analysis_glob` (default: `knowerage/analysis/**/*.md`).
 2. Inspect the returned `summary` for counts per status.
-3. Optionally call `knowerage.list_stale` to get the list of problematic records for remediation.
+3. Optionally call `knowerage_list_stale` to get the list of problematic records for remediation.
 
 **Example request**:
 ```json
@@ -87,14 +87,14 @@ flowchart LR
 
 - **Glob pattern**: `knowerage/analysis/**/*.md`
 - **Location**: Under workspace root, in `knowerage/analysis/`.
-- **Validation**: Use `knowerage.parse_doc_metadata` to parse and validate an analysis file's frontmatter before or after creating it.
-- **Full discovery**: `knowerage.reconcile_all` discovers and reconciles all files matching the glob.
+- **Validation**: Use `knowerage_parse_doc_metadata` to parse and validate an analysis file's frontmatter before or after creating it.
+- **Full discovery**: `knowerage_reconcile_all` discovers and reconciles all files matching the glob.
 
 ---
 
 ## MCP resources
 
-The current server exposes **tools only** (no `resources/list` or `resources/read`). Use `knowerage.list_registry`, `knowerage.get_file_status`, `knowerage.list_stale`, `knowerage.get_tree`, and `knowerage.coverage_overview` for discovery and coverage data.
+The current server exposes **tools only** (no `resources/list` or `resources/read`). Use `knowerage_list_registry`, `knowerage_get_file_status`, `knowerage_list_stale`, `knowerage_get_tree`, and `knowerage_coverage_overview` for discovery and coverage data.
 
 ---
 
@@ -102,17 +102,17 @@ The current server exposes **tools only** (no `resources/list` or `resources/rea
 
 | Tool | Purpose |
 |------|---------|
-| `knowerage.create_or_update_doc` | Create/update analysis document with metadata |
-| `knowerage.parse_doc_metadata` | Parse frontmatter + validate coverage |
-| `knowerage.reconcile_record` | Reconcile one analysis record |
-| `knowerage.reconcile_all` | Full rescan of the analysis contents and registry.json against the project contents |
-| `knowerage.get_file_status` | Analyzed vs missing ranges for one source |
-| `knowerage.list_stale` | List stale/problematic records |
-| `knowerage.list_registry` | Full registry as structured JSON (`records` = same shape as `registry.json` root; sorted keys). **Prefer this** over opening the file when you need the inventory for planning or mapping sources to analyses. |
-| `knowerage.get_tree` | Tree/grouped coverage for UI |
-| `knowerage.coverage_overview` | Batch overview: per-source coverage, project file/line totals, stale list |
-| `registry.export_report` | Export snapshot (JSON/YAML/TXT/HTML) |
-| `knowerage.generate_bundle` | Export selected analyses to `toc*.md` / `combined*.md` / `manifest.json` under `output_dir` (chunked; see [contracts/contracts.md](contracts/contracts.md)) |
+| `knowerage_create_or_update_doc` | Create/update analysis document with metadata |
+| `knowerage_parse_doc_metadata` | Parse frontmatter + validate coverage |
+| `knowerage_reconcile_record` | Reconcile one analysis record |
+| `knowerage_reconcile_all` | Full rescan of the analysis contents and registry.json against the project contents |
+| `knowerage_get_file_status` | Analyzed vs missing ranges for one source |
+| `knowerage_list_stale` | List stale/problematic records |
+| `knowerage_list_registry` | Full registry as structured JSON (`records` = same shape as `registry.json` root; sorted keys). **Prefer this** over opening the file when you need the inventory for planning or mapping sources to analyses. |
+| `knowerage_get_tree` | Tree/grouped coverage for UI |
+| `knowerage_coverage_overview` | Batch overview: per-source coverage, project file/line totals, stale list |
+| `registry_export_report` | Export snapshot (JSON/YAML/TXT/HTML) |
+| `knowerage_generate_bundle` | Export selected analyses to `toc*.md` / `combined*.md` / `manifest.json` under `output_dir` (chunked; see [contracts/contracts.md](contracts/contracts.md)) |
 
 ---
 

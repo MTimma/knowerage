@@ -110,17 +110,17 @@ impl McpServer {
 
     pub fn dispatch_tool(&self, name: &str, args: Value) -> Result<Value, KnowerageError> {
         match name {
-            "knowerage.create_or_update_doc" => self.handle_create_or_update_doc(args),
-            "knowerage.parse_doc_metadata" => self.handle_parse_doc_metadata(args),
-            "knowerage.reconcile_record" => self.handle_reconcile_record(args),
-            "knowerage.reconcile_all" => self.handle_reconcile_all(args),
-            "knowerage.get_file_status" => self.handle_get_file_status(args),
-            "knowerage.list_stale" => self.handle_list_stale(args),
-            "knowerage.list_registry" => self.handle_list_registry(args),
-            "knowerage.get_tree" => self.handle_get_tree(args),
-            "knowerage.coverage_overview" => self.handle_coverage_overview(args),
-            "registry.export_report" => self.handle_export_report(args),
-            "knowerage.generate_bundle" => self.handle_generate_bundle(args),
+            "knowerage_create_or_update_doc" => self.handle_create_or_update_doc(args),
+            "knowerage_parse_doc_metadata" => self.handle_parse_doc_metadata(args),
+            "knowerage_reconcile_record" => self.handle_reconcile_record(args),
+            "knowerage_reconcile_all" => self.handle_reconcile_all(args),
+            "knowerage_get_file_status" => self.handle_get_file_status(args),
+            "knowerage_list_stale" => self.handle_list_stale(args),
+            "knowerage_list_registry" => self.handle_list_registry(args),
+            "knowerage_get_tree" => self.handle_get_tree(args),
+            "knowerage_coverage_overview" => self.handle_coverage_overview(args),
+            "registry_export_report" => self.handle_export_report(args),
+            "knowerage_generate_bundle" => self.handle_generate_bundle(args),
             _ => Err(KnowerageError::DocParse(format!("Unknown tool: {name}"))),
         }
     }
@@ -526,8 +526,8 @@ impl McpServer {
     fn tool_definitions() -> Vec<Value> {
         vec![
             serde_json::json!({
-                "name": "knowerage.create_or_update_doc",
-                "description": "PRIMARY tool for persisting legacy/source code analysis: create or update an analysis markdown file under knowerage/analysis/ with YAML frontmatter (source path, covered line ranges, dates). Use this whenever the user asks to analyze, document, or explain a source file and Knowerage is in the tool list—do not use generic file-write tools alone for knowerage analysis paths, or the registry will not stay consistent. Follow with knowerage.reconcile_record on the same analysis_path.",
+                "name": "knowerage_create_or_update_doc",
+                "description": "PRIMARY tool for persisting legacy/source code analysis: create or update an analysis markdown file under knowerage/analysis/ with YAML frontmatter (source path, covered line ranges, dates). Use this whenever the user asks to analyze, document, or explain a source file and Knowerage is in the tool list—do not use generic file-write tools alone for knowerage analysis paths, or the registry will not stay consistent. Follow with knowerage_reconcile_record on the same analysis_path.",
                 "inputSchema": {
                     "type": "object",
                     "properties": {
@@ -544,7 +544,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.parse_doc_metadata",
+                "name": "knowerage_parse_doc_metadata",
                 "description": "Parse YAML frontmatter from an analysis markdown file",
                 "inputSchema": {
                     "type": "object",
@@ -555,7 +555,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.reconcile_record",
+                "name": "knowerage_reconcile_record",
                 "description": "MANDATORY after every create_or_update_doc (or manual edit) to one analysis file: reconciles that analysis into knowerage/registry.json (hashes, covered_ranges, freshness). Call immediately after writing analysis content so coverage is recorded; skipping this leaves the registry wrong or stale.",
                 "inputSchema": {
                     "type": "object",
@@ -566,7 +566,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.reconcile_all",
+                "name": "knowerage_reconcile_all",
                 "description": "Rescan all analysis markdown files matching the glob and rebuild registry entries. Use after git pull, bulk edits, or when the registry may be empty or out of date; prefer reconcile_record when only one file changed.",
                 "inputSchema": {
                     "type": "object",
@@ -579,7 +579,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.get_file_status",
+                "name": "knowerage_get_file_status",
                 "description": "Per-source coverage: total lines, analyzed vs missing ranges, and which analysis paths claim them. Prefer this over guessing from open files when answering 'what is documented for this source?' while Knowerage is enabled.",
                 "inputSchema": {
                     "type": "object",
@@ -590,7 +590,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.list_stale",
+                "name": "knowerage_list_stale",
                 "description": "List registry records filtered by staleness status",
                 "inputSchema": {
                     "type": "object",
@@ -607,7 +607,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.list_registry",
+                "name": "knowerage_list_registry",
                 "description": "Return the full analysis coverage registry in one structured JSON response. USE THIS when you need an inventory of which source files are documented, where the analysis markdown lives, which line ranges are claimed, and freshness (fresh/stale_doc/stale_src/missing_src/dangling_doc). The `records` object is the same shape as the entire knowerage/registry.json file (sorted keys for stable reading). Call early when planning documentation work, finding gaps, or mapping analysis paths to sources—instead of opening registry.json by hand. Optional filters: analysis_path_prefix narrows by analysis key; statuses limits to given status values (same strings as in each record). After reconcile_record/reconcile_all, call again if you need the latest snapshot.",
                 "inputSchema": {
                     "type": "object",
@@ -628,7 +628,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.get_tree",
+                "name": "knowerage_get_tree",
                 "description": "Get a tree view of analysis records grouped by directory",
                 "inputSchema": {
                     "type": "object",
@@ -639,7 +639,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.coverage_overview",
+                "name": "knowerage_coverage_overview",
                 "description": "Batch coverage overview for all source files. Returns per-source coverage percentage, analyzed/missing ranges, range attribution, stale records, and project-wide file/line totals. Uses fresh records only for coverage calculation. Optional extensions filter applies to sources, stale list, and project scan.",
                 "inputSchema": {
                     "type": "object",
@@ -653,7 +653,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "registry.export_report",
+                "name": "registry_export_report",
                 "description": "Export the registry as a report file in json, yaml, txt, or html format",
                 "inputSchema": {
                     "type": "object",
@@ -669,7 +669,7 @@ impl McpServer {
                 }
             }),
             serde_json::json!({
-                "name": "knowerage.generate_bundle",
+                "name": "knowerage_generate_bundle",
                 "description": "Export selected analysis markdown files into chunked NotebookLM-style bundles under output_dir: writes toc.md + combined.md for part 1, toc_N.md + combined_N.md for further parts when size limits require splitting, plus manifest.json (files, errors, part metadata). Every analysis_paths entry is validated under the workspace (no traversal). Per-file and per-part size limits apply (see contracts).",
                 "inputSchema": {
                     "type": "object",
@@ -715,7 +715,7 @@ impl McpServer {
                         "name": "knowerage",
                         "version": env!("CARGO_PKG_VERSION")
                     },
-                    "instructions": "Knowerage is enabled: treat legacy/source-code analysis and documentation tasks as Knowerage workflows. Do not create knowerage/analysis/*.md with plain file writes alone or hand-edit knowerage/registry.json. For each analysis: (1) knowerage.create_or_update_doc with source_path, covered_lines, and frontmatter-consistent content; (2) knowerage.reconcile_record on that analysis_path. For inventory/gaps use knowerage.list_registry, knowerage.get_file_status, knowerage.coverage_overview, or knowerage.list_stale instead of reading registry.json manually. After bulk source changes, knowerage.reconcile_all. For NotebookLM-style bulk export of selected analyses to markdown parts under a directory, use knowerage.generate_bundle (see contracts)."
+                    "instructions": "Knowerage is enabled: treat legacy/source-code analysis and documentation tasks as Knowerage workflows. Do not create knowerage/analysis/*.md with plain file writes alone or hand-edit knowerage/registry.json. For each analysis: (1) knowerage_create_or_update_doc with source_path, covered_lines, and frontmatter-consistent content; (2) knowerage_reconcile_record on that analysis_path. For inventory/gaps use knowerage_list_registry, knowerage_get_file_status, knowerage_coverage_overview, or knowerage_list_stale instead of reading registry.json manually. After bulk source changes, knowerage_reconcile_all. For NotebookLM-style bulk export of selected analyses to markdown parts under a directory, use knowerage_generate_bundle (see contracts)."
                 })),
                 error: None,
             }),
@@ -996,7 +996,7 @@ mod tests {
             "extra_number": 42
         });
 
-        let result = server.dispatch_tool("knowerage.create_or_update_doc", args);
+        let result = server.dispatch_tool("knowerage_create_or_update_doc", args);
         assert!(result.is_ok());
         assert_eq!(result.unwrap()["ok"], true);
     }
@@ -1015,7 +1015,7 @@ mod tests {
         });
 
         let err = server
-            .dispatch_tool("knowerage.create_or_update_doc", args)
+            .dispatch_tool("knowerage_create_or_update_doc", args)
             .unwrap_err();
         assert_eq!(err.code(), "E_PATH_TRAVERSAL");
     }
@@ -1034,7 +1034,7 @@ mod tests {
         });
 
         let err = server
-            .dispatch_tool("knowerage.create_or_update_doc", args)
+            .dispatch_tool("knowerage_create_or_update_doc", args)
             .unwrap_err();
         assert_eq!(err.code(), "E_PATH_TRAVERSAL");
     }
@@ -1051,7 +1051,7 @@ mod tests {
         });
 
         let err = server
-            .dispatch_tool("registry.export_report", args)
+            .dispatch_tool("registry_export_report", args)
             .unwrap_err();
         assert!(
             err.to_string().contains("Unsupported export format"),
@@ -1067,7 +1067,7 @@ mod tests {
 
         server
             .dispatch_tool(
-                "knowerage.create_or_update_doc",
+                "knowerage_create_or_update_doc",
                 serde_json::json!({
                     "analysis_path": "knowerage/analysis/x.md",
                     "source_path": "src/X.java",
@@ -1079,7 +1079,7 @@ mod tests {
 
         let out = server
             .dispatch_tool(
-                "knowerage.generate_bundle",
+                "knowerage_generate_bundle",
                 serde_json::json!({
                     "analysis_paths": ["knowerage/analysis/x.md"],
                     "output_dir": "knowerage/export/b1"
@@ -1106,7 +1106,7 @@ mod tests {
 
         let err = server
             .dispatch_tool(
-                "knowerage.generate_bundle",
+                "knowerage_generate_bundle",
                 serde_json::json!({
                     "analysis_paths": ["../../etc/passwd"],
                     "output_dir": "knowerage/out"
@@ -1131,7 +1131,7 @@ mod tests {
         });
 
         let result = server
-            .dispatch_tool("knowerage.create_or_update_doc", args)
+            .dispatch_tool("knowerage_create_or_update_doc", args)
             .unwrap();
         assert_eq!(result["ok"], true);
 
@@ -1158,12 +1158,12 @@ mod tests {
             "content": "# Analysis"
         });
         server
-            .dispatch_tool("knowerage.create_or_update_doc", create_args)
+            .dispatch_tool("knowerage_create_or_update_doc", create_args)
             .unwrap();
 
         let parse_args = serde_json::json!({ "analysis_path": "knowerage/analysis/app.md" });
         let result = server
-            .dispatch_tool("knowerage.parse_doc_metadata", parse_args)
+            .dispatch_tool("knowerage_parse_doc_metadata", parse_args)
             .unwrap();
 
         assert_eq!(result["source_file"], "src/App.java");
@@ -1185,12 +1185,12 @@ mod tests {
             "content": "# Analysis"
         });
         server
-            .dispatch_tool("knowerage.create_or_update_doc", create_args)
+            .dispatch_tool("knowerage_create_or_update_doc", create_args)
             .unwrap();
 
         let reconcile_args = serde_json::json!({ "analysis_path": "knowerage/analysis/app.md" });
         let result = server
-            .dispatch_tool("knowerage.reconcile_record", reconcile_args)
+            .dispatch_tool("knowerage_reconcile_record", reconcile_args)
             .unwrap();
 
         assert_eq!(result["status"], "fresh");
@@ -1223,17 +1223,17 @@ mod tests {
             "content": "# Analysis"
         });
         server
-            .dispatch_tool("knowerage.create_or_update_doc", create_args)
+            .dispatch_tool("knowerage_create_or_update_doc", create_args)
             .unwrap();
 
         let reconcile_args = serde_json::json!({ "analysis_path": "knowerage/analysis/app.md" });
         server
-            .dispatch_tool("knowerage.reconcile_record", reconcile_args)
+            .dispatch_tool("knowerage_reconcile_record", reconcile_args)
             .unwrap();
 
         let status_args = serde_json::json!({ "source_path": "src/App.java" });
         let result = server
-            .dispatch_tool("knowerage.get_file_status", status_args)
+            .dispatch_tool("knowerage_get_file_status", status_args)
             .unwrap();
 
         assert_eq!(result["total_lines"], 10);
@@ -1249,7 +1249,7 @@ mod tests {
         let server = setup_server(&tmp);
 
         let result = server
-            .dispatch_tool("knowerage.coverage_overview", serde_json::json!({}))
+            .dispatch_tool("knowerage_coverage_overview", serde_json::json!({}))
             .unwrap();
 
         assert_eq!(result["summary"]["total_sources"], 0);
@@ -1290,17 +1290,17 @@ mod tests {
             "content": "# Analysis"
         });
         server
-            .dispatch_tool("knowerage.create_or_update_doc", create)
+            .dispatch_tool("knowerage_create_or_update_doc", create)
             .unwrap();
         server
             .dispatch_tool(
-                "knowerage.reconcile_record",
+                "knowerage_reconcile_record",
                 serde_json::json!({"analysis_path": "knowerage/analysis/app.md"}),
             )
             .unwrap();
 
         let result = server
-            .dispatch_tool("knowerage.coverage_overview", serde_json::json!({}))
+            .dispatch_tool("knowerage_coverage_overview", serde_json::json!({}))
             .unwrap();
 
         assert_eq!(result["summary"]["total_sources"], 1);
@@ -1349,11 +1349,11 @@ mod tests {
             "content": "# A"
         });
         server
-            .dispatch_tool("knowerage.create_or_update_doc", create1)
+            .dispatch_tool("knowerage_create_or_update_doc", create1)
             .unwrap();
         server
             .dispatch_tool(
-                "knowerage.reconcile_record",
+                "knowerage_reconcile_record",
                 serde_json::json!({"analysis_path": "knowerage/analysis/svc-a.md"}),
             )
             .unwrap();
@@ -1365,18 +1365,18 @@ mod tests {
             "content": "# B"
         });
         server
-            .dispatch_tool("knowerage.create_or_update_doc", create2)
+            .dispatch_tool("knowerage_create_or_update_doc", create2)
             .unwrap();
         server
             .dispatch_tool(
-                "knowerage.reconcile_record",
+                "knowerage_reconcile_record",
                 serde_json::json!({"analysis_path": "knowerage/analysis/svc-b.md"}),
             )
             .unwrap();
 
         // Both fresh → 100% coverage
         let r1 = server
-            .dispatch_tool("knowerage.coverage_overview", serde_json::json!({}))
+            .dispatch_tool("knowerage_coverage_overview", serde_json::json!({}))
             .unwrap();
         assert_eq!(r1["summary"]["avg_coverage_pct"], 100.0);
 
@@ -1387,11 +1387,11 @@ mod tests {
             .join("\n");
         create_source_file(&tmp, "src/Svc.java", &new_source);
         server
-            .dispatch_tool("knowerage.reconcile_all", serde_json::json!({}))
+            .dispatch_tool("knowerage_reconcile_all", serde_json::json!({}))
             .unwrap();
 
         let r2 = server
-            .dispatch_tool("knowerage.coverage_overview", serde_json::json!({}))
+            .dispatch_tool("knowerage_coverage_overview", serde_json::json!({}))
             .unwrap();
 
         // Both records are now stale_src, so coverage from fresh = 0
@@ -1420,7 +1420,7 @@ mod tests {
 
         server
             .dispatch_tool(
-                "knowerage.create_or_update_doc",
+                "knowerage_create_or_update_doc",
                 serde_json::json!({
                     "analysis_path": "knowerage/analysis/a.md",
                     "source_path": "src/A.java",
@@ -1431,14 +1431,14 @@ mod tests {
             .unwrap();
         server
             .dispatch_tool(
-                "knowerage.reconcile_record",
+                "knowerage_reconcile_record",
                 serde_json::json!({"analysis_path": "knowerage/analysis/a.md"}),
             )
             .unwrap();
 
         server
             .dispatch_tool(
-                "knowerage.create_or_update_doc",
+                "knowerage_create_or_update_doc",
                 serde_json::json!({
                     "analysis_path": "knowerage/analysis/b.md",
                     "source_path": "src/B.java",
@@ -1449,13 +1449,13 @@ mod tests {
             .unwrap();
         server
             .dispatch_tool(
-                "knowerage.reconcile_record",
+                "knowerage_reconcile_record",
                 serde_json::json!({"analysis_path": "knowerage/analysis/b.md"}),
             )
             .unwrap();
 
         let result = server
-            .dispatch_tool("knowerage.coverage_overview", serde_json::json!({}))
+            .dispatch_tool("knowerage_coverage_overview", serde_json::json!({}))
             .unwrap();
 
         assert_eq!(result["summary"]["total_sources"], 2);
@@ -1489,7 +1489,7 @@ mod tests {
 
         server
             .dispatch_tool(
-                "knowerage.create_or_update_doc",
+                "knowerage_create_or_update_doc",
                 serde_json::json!({
                     "analysis_path": "knowerage/analysis/t.md",
                     "source_path": "src/Tracked.java",
@@ -1500,13 +1500,13 @@ mod tests {
             .unwrap();
         server
             .dispatch_tool(
-                "knowerage.reconcile_record",
+                "knowerage_reconcile_record",
                 serde_json::json!({"analysis_path": "knowerage/analysis/t.md"}),
             )
             .unwrap();
 
         let result = server
-            .dispatch_tool("knowerage.coverage_overview", serde_json::json!({}))
+            .dispatch_tool("knowerage_coverage_overview", serde_json::json!({}))
             .unwrap();
 
         assert_eq!(result["summary"]["total_sources"], 1);
@@ -1529,7 +1529,7 @@ mod tests {
 
         server
             .dispatch_tool(
-                "knowerage.create_or_update_doc",
+                "knowerage_create_or_update_doc",
                 serde_json::json!({
                     "analysis_path": "knowerage/analysis/app.md",
                     "source_path": "src/App.java",
@@ -1540,14 +1540,14 @@ mod tests {
             .unwrap();
         server
             .dispatch_tool(
-                "knowerage.reconcile_record",
+                "knowerage_reconcile_record",
                 serde_json::json!({"analysis_path": "knowerage/analysis/app.md"}),
             )
             .unwrap();
 
         let r = server
             .dispatch_tool(
-                "knowerage.coverage_overview",
+                "knowerage_coverage_overview",
                 serde_json::json!({ "extensions": ["java"] }),
             )
             .unwrap();
@@ -1558,7 +1558,7 @@ mod tests {
         assert_eq!(r["sources"][0]["source_path"], "src/App.java");
 
         let r_all = server
-            .dispatch_tool("knowerage.coverage_overview", serde_json::json!({}))
+            .dispatch_tool("knowerage_coverage_overview", serde_json::json!({}))
             .unwrap();
         assert_eq!(r_all["summary"]["project_files"], 2);
         assert_eq!(r_all["summary"]["project_lines"], 5);

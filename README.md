@@ -38,7 +38,7 @@ Register Knowerage wherever your MCP host expects server definitions (for exampl
 
 Replace `${workspaceFolder}` with your project root if your host does not expand that variable.
 
-`KNOWERAGE_AUTO_FULL_RECONCILE` is optional: when **unset**, **empty**, or not a truthy value, the file watcher defaults to **off**. Set to `1`, `true`, `yes`, or `on` (trimmed, case-insensitive) to enable. When **on**, the server watches `knowerage/` and, after a short debounce, runs `knowerage.reconcile_all` on filesystem changes. That is **not** the same as running a full reconcile after every MCP tool call—it only reacts to file changes under `knowerage/`. Registry writes to `registry.json` are ignored by the watcher so saves do not loop.
+`KNOWERAGE_AUTO_FULL_RECONCILE` is optional: when **unset**, **empty**, or not a truthy value, the file watcher defaults to **off**. Set to `1`, `true`, `yes`, or `on` (trimmed, case-insensitive) to enable. When **on**, the server watches `knowerage/` and, after a short debounce, runs `knowerage_reconcile_all` on filesystem changes. That is **not** the same as running a full reconcile after every MCP tool call—it only reacts to file changes under `knowerage/`. Registry writes to `registry.json` are ignored by the watcher so saves do not loop.
 
 ## How It Works
 
@@ -76,16 +76,16 @@ Frontmatter for analysis `.md` files is specified separately in the contracts do
 
 | Tool | Purpose |
 |------|---------|
-| `knowerage.create_or_update_doc` | Create/update analysis document |
-| `knowerage.parse_doc_metadata` | Parse and validate frontmatter |
-| `knowerage.reconcile_record` | Reconcile one analysis record |
-| `knowerage.reconcile_all` | Full rescan/rebuild |
-| `knowerage.get_file_status` | Analyzed vs missing ranges |
-| `knowerage.list_stale` | List stale/problematic records |
-| `knowerage.list_registry` | Full registry snapshot (same shape as `registry.json`, sorted keys) |
-| `knowerage.get_tree` | Tree/grouped coverage |
-| `registry.export_report` | Export snapshot (JSON/YAML/TXT/HTML) |
-| `knowerage.generate_bundle` | Chunked export of selected analyses (`toc*.md`, `combined*.md`, `manifest.json`) |
+| `knowerage_create_or_update_doc` | Create/update analysis document |
+| `knowerage_parse_doc_metadata` | Parse and validate frontmatter |
+| `knowerage_reconcile_record` | Reconcile one analysis record |
+| `knowerage_reconcile_all` | Full rescan/rebuild |
+| `knowerage_get_file_status` | Analyzed vs missing ranges |
+| `knowerage_list_stale` | List stale/problematic records |
+| `knowerage_list_registry` | Full registry snapshot (same shape as `registry.json`, sorted keys) |
+| `knowerage_get_tree` | Tree/grouped coverage |
+| `registry_export_report` | Export snapshot (JSON/YAML/TXT/HTML) |
+| `knowerage_generate_bundle` | Chunked export of selected analyses (`toc*.md`, `combined*.md`, `manifest.json`) |
 
 ## Project Structure
 

@@ -18,7 +18,7 @@ Close gaps so Knowerage works out of the box: clear workspace resolution, first-
 | Workspace root | MCP may use wrong directory | Document how the MCP host passes workspace roots; add `KNOWERAGE_WORKSPACE_ROOT` and clear error if invalid |
 | First-run bootstrap | Empty project has no registry | Consider auto-running `reconcile_all` on first `get_file_status` or `get_tree` when registry is empty |
 | Copy-paste config | Users must write config manually | Provide ready-to-paste MCP server config snippet in README |
-| Analysis folder | Agent may not know where to put analyses | Document convention (e.g. `knowerage/analysis/`) and/or add `knowerage.create_or_update_doc` default path |
+| Analysis folder | Agent may not know where to put analyses | Document convention (e.g. `knowerage/analysis/`) and/or add `knowerage_create_or_update_doc` default path |
 | User rules | Agent must know to append to `knowerage/registry.txt` | Document as suggested MCP client agent rule for users |
 | Agent inference | User must say "record coverage" every time | Add rule: "Analyze X" implies full workflow (create, reconcile, record) |
 
@@ -66,8 +66,8 @@ Add to Agent Workflow section:
 ### Implicit workflow
 
 When the user asks to "analyze" or "document" a legacy source file, the agent should:
-1. Create analysis with `knowerage.create_or_update_doc`
-2. Reconcile with `knowerage.reconcile_record`
+1. Create analysis with `knowerage_create_or_update_doc`
+2. Reconcile with `knowerage_reconcile_record`
 3. Append to `knowerage/registry.txt` in format: `{source_file}|{analysis_md_path}|{lines_from-to}`
 
 The user does not need to say "record coverage" — the agent infers the full workflow.
