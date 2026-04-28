@@ -35,6 +35,28 @@ Replace `${workspaceFolder}` with your project root if your host does not expand
 
 `KNOWERAGE_AUTO_FULL_RECONCILE` is optional: when **unset**, **empty**, or not a truthy value, the file watcher defaults to **off**. Set to `1`, `true`, `yes`, or `on` (trimmed, case-insensitive) to enable. When **on**, the server watches `knowerage/` and, after a short debounce, runs `knowerage_reconcile_all` on filesystem changes. That is **not** the same as running a full reconcile after every MCP tool call—it only reacts to file changes under `knowerage/`. Registry writes to `registry.json` are ignored by the watcher so saves do not loop.
 
+## How to use Knowerage
+
+After the MCP server is configured, you talk to your assistant in normal sentences. You do not need to memorize tool names.
+
+### Analyse or document code
+
+Point at files, classes, or behaviour you care about. For example:
+
+- *Using Knowerage, Analyze the data entity reconciliation and versioning logic in the ETL service.*
+
+The assistant creates or updates markdown under `knowerage/analysis/` and records coverage in `knowerage/registry.json` (see **How it works** below).
+
+### Coverage and gaps
+
+When you already have Knowerage generated documentation in the repository, you can ask another agent:
+
+- *In percentage, how much of the code has our analysis covered?*
+- *Which parts of the codebase is not yet analysed?*
+
+Knowerage answers these from the registry and coverage helpers (for example overview, per-file status, and stale lists) 
+Agent does not need to spend tokens to go over the whole codebase the second time and compare to the analysis docs
+
 ## Alternative approaches
 
 ### Install via npm
