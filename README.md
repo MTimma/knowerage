@@ -4,9 +4,8 @@
 
 # Knowerage — AI Analysis Coverage Management
 
-Local-first MCP server that tracks legacy code analysis coverage and freshness.
 
-**Source:** [github.com/MTimma/knowerage](https://github.com/MTimma/knowerage)
+**Links:** [GitHub](https://github.com/MTimma/knowerage) · [Glama MCP listing](https://glama.ai/mcp/servers/MTimma/knowerage) · [npm `@mtimma/knowerage`](https://www.npmjs.com/package/@mtimma/knowerage)
 
 ## Quick Start
 
