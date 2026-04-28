@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="docs/assets/icon.png" alt="Knowerage project icon" width="128" />
+</div>
+
 # Knowerage — AI Analysis Coverage Management
 
 Local-first MCP server that tracks legacy code analysis coverage and freshness.
