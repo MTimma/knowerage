@@ -35,7 +35,7 @@ Replace `${workspaceFolder}` with your project root if your host does not expand
 
 `KNOWERAGE_AUTO_FULL_RECONCILE` is optional: when **unset**, **empty**, or not a truthy value, the file watcher defaults to **off**. Set to `1`, `true`, `yes`, or `on` (trimmed, case-insensitive) to enable. When **on**, the server watches `knowerage/` and, after a short debounce, runs `knowerage_reconcile_all` on filesystem changes. That is **not** the same as running a full reconcile after every MCP tool call—it only reacts to file changes under `knowerage/`. Registry writes to `registry.json` are ignored by the watcher so saves do not loop.
 
-## How to use Knowerage (plain language)
+## How to use Knowerage
 
 After the MCP server is configured, you talk to your assistant in normal sentences. You do not need to memorize tool names.
 
